@@ -59,8 +59,10 @@ const Auth = () => {
   let cartCount = useSelector(state => state.cart.cartItems);
 
   useEffect(() => {
-    dispatch(getCart(currentUser.userId));
-    dispatch(getOrderHistory(currentUser.userId));
+    if (currentUser.userId != undefined) {
+      dispatch(getCart(currentUser.userId));
+      dispatch(getOrderHistory(currentUser.userId));
+    }
   }, []);
 
   const handleSubmit = async e => {

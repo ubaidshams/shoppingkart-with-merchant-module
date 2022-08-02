@@ -38,12 +38,11 @@ const cartSlice = createSlice({
   initialState,
   reducers: {
     getCartTotal: (state, action) => {
-      state.cartTotal = state.cartItems.reduce(
+      state.cartTotal = state.cartItems?.reduce(
         (acc, item) => acc + item.cost * item.quantity,
         0
       );
     },
-  
   },
   extraReducers: builder => {
     builder.addCase(addToCart.fulfilled, (state, action) => {
@@ -55,7 +54,7 @@ const cartSlice = createSlice({
     // builder.addCase(getCart.rejected, (state, action) => {
     //   state.error = action.payload.data;
     // });
-    
+
     // builder.addCase(updateCart.fulfilled, (state, action) => {
     //   let index = state.cartItems.findIndex(
     //     v => v.itemId == action.payload.payload.itemid

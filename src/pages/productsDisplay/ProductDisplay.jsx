@@ -13,12 +13,13 @@ import { useNavigate, useParams } from "react-router-dom";
 import Cataxios from "./../../apis/Cataxios";
 import { getCurrentProduct } from "../../features/products/productSlice";
 // import Statements
-import { addToCart,getCart } from "../../features/cart/cartSlice";
+import { addToCart, getCart } from "../../features/cart/cartSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { OpenLogin } from "../../features/Login/LoginSlice";
 import StarRatings from "../../components/starRating/StarRatings";
 import CalculateOffer from "../../components/Offer Helper Components/CalculateOffer";
 import { Box, Grid } from "@mui/material";
+import { AiOutlineDown } from "react-icons/ai";
 
 const useStyles = makeStyles(theme => ({
   heading: {
@@ -59,7 +60,7 @@ const ProductDisplay = () => {
 
   useEffect(() => {
     // setIdList(cartList.map(item => item.productId));
-    setCartIdList(cartlist.map(item => item.productId))
+    setCartIdList(cartlist.map(item => item.productId));
   }, [cartlist]);
 
   let handleBuy = e => {
@@ -160,14 +161,118 @@ const ProductDisplay = () => {
             </span>
           </section>
 
-          <span>
+          <Accordion className={style.starAccordion}>
+            <AccordionSummary
+              expandIcon={<ExpandMoreIcon />}
+              aria-controls="panelstar-content"
+              id="panelstar-header"
+            >
+              <Typography class={style.starHeading}>
+                <StarRatings rating={currentProduct.rating} />
+              </Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+              <div className={style.ratingsContainer}>
+                <div className={style.productRatings}>
+                  <label for="file">
+                    <h3>5 Star:</h3>
+                  </label>
+                  <progress
+                    className={style.progressBar}
+                    id="file"
+                    value="90"
+                    title="90%"
+                    max="100"
+                  >
+                    {" "}
+                    90%{" "}
+                  </progress>
+                  <p>90%</p>
+                </div>
+
+                <div className={style.productRatings}>
+                  <label for="file">
+                    <h3>4 Star:</h3>
+                  </label>
+                  <progress
+                    className={style.progressBar}
+                    id="file"
+                    value="60"
+                    title="60%"
+                    max="100"
+                  >
+                    {" "}
+                    60%{" "}
+                  </progress>
+                  <p>60%</p>
+                </div>
+
+                <div className={style.productRatings}>
+                  <label for="file">
+                    <h3>3 Star:</h3>
+                  </label>
+                  <progress
+                    className={style.progressBar}
+                    id="file"
+                    value="50"
+                    title="50%"
+                    max="100"
+                  >
+                    {" "}
+                    50%{" "}
+                  </progress>
+                  <p>50%</p>
+                </div>
+
+                <div className={style.productRatings}>
+                  <label for="file">
+                    <h3>2 Star:</h3>
+                  </label>
+                  <progress
+                    className={style.progressBar}
+                    id="file"
+                    value="46"
+                    title="46%"
+                    max="100"
+                  >
+                    {" "}
+                    46%{" "}
+                  </progress>
+                  <p>46%</p>
+                </div>
+
+                <div className={style.productRatings}>
+                  <label for="file">
+                    <h3>1 Star:</h3>
+                  </label>
+                  <progress
+                    className={style.progressBar}
+                    id="file"
+                    value="32"
+                    max="100"
+                    title="32%"
+                  >
+                    {" "}
+                    32%{" "}
+                  </progress>
+                  <p>32%</p>
+                </div>
+                <div className={style.seeAllReviews}>
+                  <a href="#">See all customer reviews </a>
+                </div>
+              </div>
+            </AccordionDetails>
+          </Accordion>
+          {/* <span>
             Ratings:
             <span className={style.ratingstag}>
-              {currentProduct.rating}
+             
+
               <StarRatings rating={currentProduct.rating} left="1.7" top="0" />
-              {/* <Chip className={style.chip} label="Best" /> */}
+              
             </span>
-          </span>
+          </span> */}
+
           <br />
           <br />
           <span>
@@ -188,18 +293,26 @@ const ProductDisplay = () => {
             <button
               className={style.addToCart}
               onClick={() => {
-               if( cartIdList.includes(currentProduct.productId)==false)
-                dispatch(addToCart({userId,payload:{cost: currentProduct.price,
-                  imageLink: currentProduct.thumbnailURL,
-                  quantity: 1,
-                  productId: currentProduct.productId,}}))
+                if (cartIdList.includes(currentProduct.productId) == false)
+                  dispatch(
+                    addToCart({
+                      userId,
+                      payload: {
+                        cost: currentProduct.price,
+                        imageLink: currentProduct.thumbnailURL,
+                        quantity: 1,
+                        productId: currentProduct.productId,
+                      },
+                    })
+                  );
                 setTimeout(() => {
                   dispatch(getCart(userId));
-                }, 300)
+                }, 300);
               }}
             >
-              {cartIdList.includes(currentProduct.productId)?"added":"add to cart"}
-
+              {cartIdList.includes(currentProduct.productId)
+                ? "added"
+                : "add to cart"}
             </button>
           </section>
           <Accordion className={style.accordion}>
