@@ -453,27 +453,7 @@ const Signup = () => {
               }}
             ></TextField>
           </Card>
-          {/* 
-
-          <Card
-            elevation={0}
-            style={{ backgroundColor: "transparent", display: "none" }}
-            className={style.formCardContainer}
-          >
-            <TextField
-              className={classes.formTextFieldOther}
-              size="small"
-              label="Password"
-              id="outlined-size-small password"
-              variant="outlined"
-              required
-              value={password}
-              type="password"
-              onChange={e => {
-                setPassword(e.target.value);
-              }}
-            ></TextField>
-          </Card> */}
+          
 
           <Card style={{ marginLeft: "300px" }}>
             {model && (
