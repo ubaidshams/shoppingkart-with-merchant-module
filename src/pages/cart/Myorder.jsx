@@ -25,7 +25,7 @@ const MyOrder = () => {
   const navigate = useNavigate();
   const cart = useSelector(state => state.cart);
   const dispatch = useDispatch();
-  const cartSet = cart.cartItems.map(JSON.stringify);
+  const cartSet = cart.cartItems?.map(JSON.stringify);
   const uniqueSet = new Set(cartSet);
   let uniqueArray = Array.from(uniqueSet).map(JSON.parse);
   const userId = useSelector(state => state.user.currentUser.userId);
@@ -33,7 +33,7 @@ const MyOrder = () => {
   const productQuantityCounter = {};
   const cartQnty = useSelector(state => state.cart);
 
-  cartQnty.cartItems.map(element => {
+  cartQnty.cartItems?.map(element => {
     productQuantityCounter[element.productsid] =
       (productQuantityCounter[element.productsid] || 0) + 1;
   });
@@ -54,15 +54,15 @@ const MyOrder = () => {
     dispatch(getOrderHistory(userId));
   }, []);
   useEffect(() => {
-    let newAllpropertyObj = featureProduct.reduce((acc, value) => {
+    let newAllpropertyObj = featureProduct?.reduce((acc, value) => {
       return { ...acc, [value.productId]: value };
     }, {});
     setAllPropertyObj(newAllpropertyObj);
   }, [featureProduct]);
   return (
     <div className={styles.orderListContainer} style={{ margin: "1rem auto" }}>
-      <h1>My Orders ({orderList?.length})</h1>
-      {orderList?.length === 0 ? (
+      <h1>My Orders ({orderList?.length || 0})</h1>
+      {orderList === null ? (
         <div className={styles.emptyCart}>
           <img
             src="https://rukminim1.flixcart.com/www/800/800/promos/16/05/2019/d438a32e-765a-4d8b-b4a6-520b560971e8.png?q=90"
@@ -72,7 +72,7 @@ const MyOrder = () => {
           <p>It's a good day to buy the items you saved for later!</p>
         </div>
       ) : (
-        orderList.map((order, index) => {
+        orderList?.map((order, index) => {
           let {
             id,
             orderStatus,

@@ -34,13 +34,13 @@ const CheckoutProducts = () => {
   }, []);
 
   useEffect(() => {
-    let cartIdList = cartItems.map(item => item.productId);
-    let newCartIdobj = cartItems.reduce((acc, item) => {
+    let cartIdList = cartItems?.map(item => item.productId);
+    let newCartIdobj = cartItems?.reduce((acc, item) => {
       return { ...acc, [item.productId]: [item.itemId, item.quantity] };
     }, {});
     setCartIdObject(newCartIdobj);
-    let filteredList = allProducts.filter(item => {
-      return cartIdList.includes(item.productId);
+    let filteredList = allProducts?.filter(item => {
+      return cartIdList?.includes(item.productId);
     });
     setCart(filteredList);
   }, [cartItems]);
@@ -87,7 +87,7 @@ const CheckoutProducts = () => {
   };
   return (
     <div className={styles.checkoutProductContainer}>
-      {cartItems.length === 0 ? (
+      {cartItems?.length === 0 ? (
         <div className={styles.emptyCart}>
           <img
             src="https://rukminim1.flixcart.com/www/800/800/promos/16/05/2019/d438a32e-765a-4d8b-b4a6-520b560971e8.png?q=90"
@@ -97,7 +97,7 @@ const CheckoutProducts = () => {
           <p>It's a good day to buy the items you saved for later!</p>
         </div>
       ) : (
-        cart.map((product, index) => {
+        cart?.map((product, index) => {
           // let thisProduct = allProducts.find(
           //   v => v.productId == product.productId
           // );
