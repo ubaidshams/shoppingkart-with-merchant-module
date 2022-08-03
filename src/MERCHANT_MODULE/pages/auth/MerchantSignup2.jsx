@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import style from "./signup.module.css";
-import Typography from '@mui/material/Typography';
+import Typography from "@mui/material/Typography";
+import {toast }from "react-toastify"
 import {
   TextField,
   Button,
@@ -10,8 +11,13 @@ import {
   FormControl,
   RadioGroup,
   FormControlLabel,
-  Radio
+  Radio,
+  Select,
+  FormHelperText,
+  InputLabel,
+  MenuItem,
 } from "@material-ui/core";
+import{Alert,AlertTitle} from "@mui/material"
 import { makeStyles } from "@material-ui/core/styles";
 import {
   useForm,
@@ -19,7 +25,9 @@ import {
   FormProvider,
   useFormContext,
 } from "react-hook-form";
-
+import { Country, State, City } from "country-state-city";
+import Axios from "../../../apis/Axios";
+import BackdropSpinner from "../../../components/spinner/BackdropSpinner";
 
 const useStyles = makeStyles((theme) => ({
   button: {
@@ -28,22 +36,24 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function getSteps() {
-  return [
-    "User information",
-    "Company Information",
-    "Company Address",
-  ];
+  return ["User information", "Company Information", "Company Address"];
 }
 
 const BasicForm = () => {
-  const { control } = useFormContext();
-
-  console.log(control)
+  const { control , formState: {errors}} = useFormContext();
   return (
     <>
       <Controller
         control={control}
         name="firstName"
+        rules={{required:"First Name required",
+                    minLength:{value:2 , message:"min 2 character"},
+                    maxLength:{value:20, message:"max 20 characters"} ,
+                    pattern:{
+                        value:/^[a-zA-Z][a-zA-Z ]*/,
+                        message: 'only character allowed',
+                    }
+              }}
         render={({ field }) => (
           <TextField
             id="first-name"
@@ -53,6 +63,8 @@ const BasicForm = () => {
             fullWidth
             margin="normal"
             {...field}
+            error={Boolean(errors.firstName)}
+            helperText={errors.firstName?.message|| errors.firstName?.pattern ||errors.firstName?.minLength  || errors.firstName?.maxLength }
           />
         )}
       />
@@ -60,6 +72,14 @@ const BasicForm = () => {
       <Controller
         control={control}
         name="lastName"
+        rules={{required:"Last Name required",
+                minLength:{value:2 , message:"min 2 character"},
+                maxLength:{value:20, message:"max 20 characters"} ,
+                pattern:{
+                    value: /^[a-zA-Z][a-zA-Z ]*/,
+                    message: 'only character allowed',
+                }        
+              }}
         render={({ field }) => (
           <TextField
             id="last-name"
@@ -67,78 +87,106 @@ const BasicForm = () => {
             variant="outlined"
             placeholder="Enter Your Last Name"
             fullWidth
+            error={Boolean(errors.lastName)}
+            helperText={errors.lastName?.message || errors.lastName?.pattern ||errors.lastName?.minLength  || errors.lastName?.maxLength}
             margin="normal"
             {...field}
           />
         )}
       />
       <Controller
-              control={control}
-              name="emailAddress"
-              render={({ field }) => (
-                <TextField
-                  id="email"
-                  label="E-mail"
-                  variant="outlined"
-                  placeholder="Enter Your E-mail Address"
-                  fullWidth
-                  margin="normal"
-                  {...field}
-                />
-              )}
-            />
-            <Controller
-              control={control}
-              name="phone"
-              render={({ field }) => (
-                <TextField
-                  id="phone-number"
-                  label="Phone Number"
-                  variant="outlined"
-                  placeholder="Enter Your Phone Number"
-                  fullWidth
-                  margin="normal"
-                  {...field}
-                />
-              )}
-            />
-        <FormControl component="fieldset">
-            <Controller
-              rules={{ required: true }}
-              control={control}
-              name="gender"
-              render={({ field }) => (
-                <RadioGroup {...field}>
-                  <FormControlLabel
-                    value="male"
-                    control={<Radio />}
-                    label="Male"
-                  />
-                  <FormControlLabel
-                    value="female"
-                    control={<Radio />}
-                    label="Female"
-                  />
-                  <FormControlLabel
-                    value="other"
-                    control={<Radio />}
-                    label="Other"
-                  />
-                </RadioGroup>
-              )}
-            />
-        </FormControl>
+        control={control}
+        name="emailAddress"
+        rules={{required:"Email ID required",
+              pattern:{
+                value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                message: 'email type is not valid',
+            }   
+              }}
 
+        render={({ field }) => (
+          <TextField
+            id="email"
+            label="E-mail"
+            variant="outlined"
+            placeholder="eg: jhon@example.com"
+            fullWidth
+            error={Boolean(errors.emailAddress)}
+            helperText={errors.emailAddress?.message || errors.emailAddress?.pattern }
+            margin="normal"
+            {...field}
+          />
+        )}
+      />
+      <Controller
+        control={control}
+        name="phone"
+        rules={{required:"Phone number required",
+              minLength:{value:10 , message:" must be 10 digits"}, maxLength:{value:10 , message:"maximum 10 Digits"} ,
+              pattern: {
+                value: /^[0-9]\d*(\d+)?$/i,
+                message: 'only Numbers are allowed',
+            },
+            }}
+
+        render={({ field }) => (<>
+          <TextField
+            id="phone-number"
+            label="Phone Number"
+            variant="outlined"
+            placeholder="Enter Your Phone Number"
+            fullWidth
+            error={Boolean(errors.phone)}
+            helperText={errors.phone?.message ||errors.phone?.pattern  || errors.phone?.minLength ==="minLength" ||  errors.phone?.maxLength}
+            margin="normal"
+            {...field}
+          />
+          </>
+        )}
+      />
+      
+        <Controller
+          control={control}
+          style={{display:"flex"}}
+          name="gender"
+          rules={{required :true}}
+          render={({ field }) => (
+            <RadioGroup {...field}  >
+              <FormControlLabel value="male" control={<Radio />} label="Male" />
+              <FormControlLabel
+                value="female"
+                control={<Radio />}
+                label="Female"
+              />
+              <FormControlLabel
+                value="other"
+                control={<Radio />}
+                label="Other"
+              />
+            </RadioGroup>
+          )}
+        />
     </>
   );
 };
 const CompanyDeltails = () => {
-  const { control } = useFormContext();
+  const { control , formState:{errors}} = useFormContext();
+
+  let companytypeList = ["bueaty", "pharma", "grooming", "clothing", "Other"];
+
   return (
     <>
-    <Controller
+      <Controller
         control={control}
         name="companyName"
+        rules={{required:"Company Name required",
+                    minLength:{value:4 , message:"min 4 character"},
+                    maxLength:{value:20, message:"max 20 characters"} ,
+                    pattern:{
+                        value: /^[a-zA-Z][a-zA-Z ]*/,
+                        message: 'only character allowed',
+                    }
+              }}
         render={({ field }) => (
           <TextField
             id="companyName"
@@ -146,6 +194,8 @@ const CompanyDeltails = () => {
             variant="outlined"
             placeholder="Enter Your Company Name"
             fullWidth
+            error={Boolean(errors.companyName)}
+            helperText={errors.companyName?.message || errors.companyName?.pattern ||errors.companyName?.minLength  || errors.companyName?.maxLength}
             margin="normal"
             {...field}
           />
@@ -155,13 +205,21 @@ const CompanyDeltails = () => {
       <Controller
         control={control}
         name="companyEmail"
+        rules={{required:"Email ID required",
+                  pattern:{
+                    value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                    message: 'email type is not valid',
+                  }   
+              }}
         render={({ field }) => (
           <TextField
             id="email"
-            label="E-mail"
+            label="Company Email"
             variant="outlined"
             placeholder="Enter Your E-mail Address"
             fullWidth
+            error={Boolean(errors.companyEmail)}
+            helperText={errors.companyEmail?.message || errors.companyEmail?.pattern }
             margin="normal"
             {...field}
           />
@@ -171,6 +229,13 @@ const CompanyDeltails = () => {
       <Controller
         control={control}
         name="companyPhone"
+        rules={{required:"Phone number required",
+              minLength:{value:10 , message:"must be 10 digit"}, maxLength:{value:10 , message:"maximum 10 Digit"} ,
+              pattern: {
+                value: /^[0-9]\d*(\d+)?$/i,
+                message: 'Please enter an integer',
+            },
+            }}
         render={({ field }) => (
           <TextField
             id="phone-number"
@@ -178,6 +243,8 @@ const CompanyDeltails = () => {
             variant="outlined"
             placeholder="Enter Your Phone Number"
             fullWidth
+            error={Boolean(errors.companyPhone)}
+            helperText={errors.companyPhone?.message || errors.companyPhone?.minLength || errors.companyPhone?.pattern || errors.companyPhone?.maxLength}
             margin="normal"
             {...field}
           />
@@ -186,6 +253,14 @@ const CompanyDeltails = () => {
       <Controller
         control={control}
         name="gstn"
+        rules={{required:"GSTN required",
+                    minLength:{value:6 , message:"min 6 character"},
+                    maxLength:{value:14, message:"max 14 characters"},
+                    pattern:{
+                    value:/^[A-Za-z0-9]*$/,
+                    message:"only Alphaneumeric value allow"
+                  }
+                }}
         render={({ field }) => (
           <TextField
             id="gstn"
@@ -193,6 +268,8 @@ const CompanyDeltails = () => {
             variant="outlined"
             placeholder="Enter Your GSTN"
             fullWidth
+            error={Boolean(errors.gstn)}
+            helperText={errors.gstn?.message || errors.gstn?.pattern || errors.gstn?.minLength || errors.gstn?.maxLength}
             margin="normal"
             {...field}
           />
@@ -201,6 +278,14 @@ const CompanyDeltails = () => {
       <Controller
         control={control}
         name="registerNumber"
+        rules={{required:"Store Registration Number required",
+                    minLength:{value:6 , message:"min 6 character"},
+                    maxLength:{value:14, message:"max 14 characters"},
+                    pattern:{
+                    value:/^[A-Za-z0-9]*$/,
+                    message:"only Alphaneumeric value allow"
+                  }
+                }}
         render={({ field }) => (
           <TextField
             id="registerNumber"
@@ -208,6 +293,8 @@ const CompanyDeltails = () => {
             variant="outlined"
             placeholder="Enter Your register Number"
             fullWidth
+            error={Boolean(errors.registerNumber)}
+            helperText={errors.registerNumber?.message || errors.registerNumber?.pattern || errors.registerNumber?.minLength || errors.registerNumber?.maxLength}
             margin="normal"
             {...field}
           />
@@ -216,6 +303,7 @@ const CompanyDeltails = () => {
       <Controller
         control={control}
         name="webAddress"
+        rules={{required:"company website required"}}
         render={({ field }) => (
           <TextField
             id="webAddress"
@@ -223,6 +311,8 @@ const CompanyDeltails = () => {
             variant="outlined"
             placeholder="Enter Your web Address"
             fullWidth
+            error={Boolean(errors.webAddress)}
+            helperText={errors.webAddress?.message }
             margin="normal"
             {...field}
           />
@@ -231,28 +321,87 @@ const CompanyDeltails = () => {
       <Controller
         control={control}
         name="commission"
+        rules={{required:"provide commission",
+              min:{value:10 ,message:"min 10 % commission "}, 
+              max:{value:60,  message:"maximum 60% commission we take"},
+            pattern:{value:/^[0-9]\d*(\d+)?$/i , message:"only Number are allow"}}}
         render={({ field }) => (
           <TextField
+            title="Commission you are providing to sell on ShoppingKart"
             id="commission"
             label="commission"
             variant="outlined"
             placeholder="Enter Your commission"
             fullWidth
+            error={Boolean(errors.commission)}
+            helperText={errors.commission?.message || errors.commission?.min || errors.commission?.max ||  errors.commission?.pattern }
+            type="number"
             margin="normal"
             {...field}
           />
         )}
       />
+
+      <Controller
+        name="type"
+        control={control}
+        render={({ field }) => (
+            <TextField
+              select
+              fullWidth
+              required
+              variant="outlined"
+              placeholder="Enter Your Company Type"
+              label="Company Type"
+              margin="normal"
+              {...field}
+            >
+              {companytypeList.map((cType, i) => {
+                return (
+                  <MenuItem value={`${cType}`} key={`${i}`}>
+                    {`${cType}`}
+                  </MenuItem>
+                );
+              })}
+            </TextField>
+        )}
+      />
+      
     </>
   );
 };
 const CompanyAddress = () => {
-  const { control } = useFormContext();
+  const { control , formState:{errors}} = useFormContext();
+
+  // STATE COUNTRY API
+  const [allCountries, setAllCountries] = useState([]);
+  const [countryCode, setCountryCode] = useState("IN");
+  const [allStates, setAllStates] = useState([]);
+  const [allCity, setAllcity] = useState([]);
+
+  useEffect(() => {
+    let allCountriesData = Country.getAllCountries().map((countryData) => {
+      return countryData.name;
+    });
+    setAllCountries(allCountriesData);
+  }, []);
+
+  function enableStateDropDown(countryCode1) {
+    let allStatesData = State.getStatesOfCountry(`${countryCode1}`);
+    setAllStates(allStatesData);
+  }
+
+  function enableCityDropDown(stateCode1) {
+    let allCityData = City.getCitiesOfState(countryCode, stateCode1);
+    setAllcity(allCityData);
+  }
+
   return (
     <>
       <Controller
         control={control}
         name="buldingInfo"
+        rules={{required:"Bulding Information required" }}
         render={({ field }) => (
           <TextField
             id="buldingInfo"
@@ -260,6 +409,8 @@ const CompanyAddress = () => {
             variant="outlined"
             placeholder="Bulding no/ House no"
             fullWidth
+            error={errors.buldingInfo}
+            helperText={errors.buldingInfo?.message }
             margin="normal"
             {...field}
           />
@@ -268,6 +419,14 @@ const CompanyAddress = () => {
       <Controller
         control={control}
         name="landmark"
+        rules={{required:"landmark required", 
+                  minLength:{value:4 , message:"min 4 character"},
+                  maxLength:{value:50, message:"max 50 characters"} ,
+                  pattern:{
+                      value: /^[a-zA-Z][a-zA-Z ]*/,
+                      message: 'only character allowed',
+                  }
+                }}
         render={({ field }) => (
           <TextField
             id="landmark"
@@ -275,6 +434,8 @@ const CompanyAddress = () => {
             variant="outlined"
             placeholder="Enter landmark"
             fullWidth
+            error={errors.landmark}
+            helperText={errors.landmark?.message|| errors.landmark?.pattern || errors.landmark?.minLength || errors.landmark?.maxLength}
             margin="normal"
             {...field}
           />
@@ -283,6 +444,14 @@ const CompanyAddress = () => {
       <Controller
         control={control}
         name="streetInfo"
+        rules={{required:"please provide Street information", 
+                  minLength:{value:4 , message:"min 4 character"},
+                  maxLength:{value:150, message:"max 150 characters"} ,
+                  pattern:{
+                      value: /^[A-Za-z]+$/,
+                      message: 'only character allowed',
+                  }
+                }}
         render={({ field }) => (
           <TextField
             id="streetInfo"
@@ -290,15 +459,25 @@ const CompanyAddress = () => {
             variant="outlined"
             placeholder="Enter streetInfo"
             fullWidth
+            error={errors.streetInfo}
+            helperText={errors.streetInfo?.message|| errors.streetInfo?.pattern || errors.streetInfo?.minLength || errors.streetInfo?.maxLength}
             margin="normal"
             {...field}
           />
         )}
       />
-      
+
       <Controller
         control={control}
         name="pincode"
+        rules={{required:"Pincode required",
+              minLength:{value:6 , message:"must be 6 digit"},
+              maxLength:{value:6 , message:"maximum 6 Digit"} ,
+              pattern: {
+                value: /^[0-9]\d*(\d+)?$/i,
+                message: 'Please enter Number',
+            },
+            }}
         render={({ field }) => (
           <TextField
             id="pincode"
@@ -306,12 +485,16 @@ const CompanyAddress = () => {
             variant="outlined"
             placeholder="Enter pincode"
             fullWidth
+           error={errors.pincode}
+           helperText={errors.pincode?.message || errors.pincode?.pattern || errors.pincode?.minLength || errors.pincode?.maxLength}
             margin="normal"
             {...field}
           />
         )}
       />
-      {/* <Controller
+
+      {/*BEGIN :: String type Country state  city */}
+      <Controller
         control={control}
         name="country"
         render={({ field }) => (
@@ -319,18 +502,133 @@ const CompanyAddress = () => {
             id="country"
             label="Country"
             variant="outlined"
-            placeholder="Enter Your Country Name"
+            placeholder="Enter Country"
             fullWidth
+            required
             margin="normal"
             {...field}
           />
+        )}
+      />
+      <Controller
+        control={control}
+        name="state"
+        render={({ field }) => (
+          <TextField
+            id="state"
+            label="State"
+            variant="outlined"
+            placeholder="Enter State"
+            fullWidth
+            required
+            margin="normal"
+            {...field}
+          />
+        )}
+      />
+      <Controller
+        control={control}
+        name="city"
+        render={({ field }) => (
+          <TextField
+            id="city"
+            label="City"
+            variant="outlined"
+            placeholder="Enter city"
+            fullWidth
+            required
+            margin="normal"
+            {...field}
+          />
+        )}
+      />
+      {/*END :: String type Country state  city */}
+
+
+      {/* country */}
+      {/* <Controller
+        rules={{ requied: true }}
+        control={control}
+        name="country"
+        render={({ field }) => (
+          <>
+            <TextField
+              select
+              fullWidth
+              variant="outlined"
+              placeholder="Enter Your Country Name"
+              label="Select country"
+              {...field}
+            >
+              {allCountries.map((countryName, i) => {
+                return (
+                  <MenuItem value={`${countryName}`} key={`${i}`}>
+                    {`${countryName}`}
+                  </MenuItem>
+                );
+              })}
+            </TextField>
+          </>
+        )}
+      /> */}
+
+      {/* state */}
+
+      {/* <Controller
+        rules={{ required: true }}
+        control={control}
+        name="state"
+        render={({ field }) => (
+          <>
+            <TextField
+              select
+              fullWidth
+              label="Select State"
+              variant="outlined"
+              id="state"
+              {...field}
+            >
+              {allStates.map((stateName, j) => {
+                return (
+                  <MenuItem
+                    value={`${stateName.name}`}
+                    key={`${j}`}
+                  >{`${stateName.name}`}</MenuItem>
+                );
+              })}
+            </TextField>
+          </>
+        )}
+      /> */}
+
+      {/*   city */}
+
+      {/* <Controller
+        rules={{ required: true }}
+        control={control}
+        name="city"
+        render={({ field }) => (
+          <TextField
+            select
+            fullWidth
+            label="Select City"
+            variant="outlined"
+            {...field}
+          >
+            {allCity.map((cityName, k) => {
+              return (
+                <MenuItem
+                  value={`${cityName.name}`}
+                  key={`${k}`}
+                >{`${cityName.name}`}</MenuItem>
+              );
+            })}
+          </TextField>
         )}
       /> */}
     </>
   );
 };
-
-
 
 function getStepContent(step) {
   switch (step) {
@@ -340,18 +638,12 @@ function getStepContent(step) {
       return <CompanyDeltails />;
     case 2:
       return <CompanyAddress />;
-    // case 4:
-    //   return <PaymentForm />;
     default:
       return "unknown step";
   }
 }
 
-
-
-
 const MerchantSignup2 = () => {
-
   const classes = useStyles();
   const methods = useForm({
     defaultValues: {
@@ -360,54 +652,77 @@ const MerchantSignup2 = () => {
       gender: "",
       emailAddress: "",
       phone: "",
-      role:["MERCHANT"],
       // company information
-      commission:"",
-      companyName :"",
+      commission: "",
+      companyName: "",
       companyPhone: "",
-      companyEmail:"",
-      webAddress:"",
-      gstn:"",
-      registerNumber:"",
+      companyEmail: "",
+      webAddress: "",
+      gstn: "",
+      registerNumber: "",
       // company Address
       buldingInfo: "",
       landmark: "",
       country: "",
-      state:"",
-      city:"",
-      type:"",
-      pincode:"",
-      streetInfo:"",
-      // extra
-      cardNumber: "",
-      cardMonth: "",
-      cardYear: "",
+      state: "",
+      city: "",
+      type: "",
+      pincode: "",
+      streetInfo: "",
     },
   });
   const [activeStep, setActiveStep] = useState(0);
-
   const steps = getSteps();
+  const [showBackdrop, setShowBackdrop] = useState(false);
 
-  
 
-  
-
-  const handleNext = (data) => {
+  const handleNext = async (data) => {
     console.log(data);
-    console.log("actvie" + activeStep)
-    console.log("step" + steps.length -1)
-    console.log(activeStep === steps.length - 1)
+    let payload ={
+      firstName: data.firstName,
+      lastName: data.lastName,
+      gender :data.gender,
+      email :data.emailAddress,
+      phone :data.phone,
+      commission :data.commission,
+      role: ["MERCHANT"],
+      company:{
+       name: data.companyName,
+       phone:data.companyPhone,
+       email: data.companyEmail,
+       webAddress: data.webAddress,
+       gstn:data.gstn,
+       registerNumber: data.registerNumber,
+      address:{
+        buldingInfo :data.buldingInfo,
+        landmark :data.landmark,
+        country :data.country ,
+        state :data.state,
+        city :data.city,
+        type :data.type,
+        pincode :data.pincode,
+        streetInfo :data.streetInfo,
+
+        }
+      }
+    }
 
     if (activeStep === steps.length - 1) {
-      fetch("https://jsonplaceholder.typicode.com/comments")
-        .then((data) => data.json())
-        .then((res) => {
-          console.log(res);
-          setActiveStep(activeStep + 1);
-        });
+
+      try {
+        setShowBackdrop(true)
+        let {data}= await Axios.post("/merchants", payload)
+        toast.success(`Hey ${data.data.firstName} your Merchant ID is ${data.message}`)
+        console.log("Merchant registerd")
+        setShowBackdrop(false)
+        setActiveStep(activeStep + 1)
+      } catch (error) {
+        console.log(error)
+        toast.error(error.message)
+        setShowBackdrop(false)
+      }
     } else {
       setActiveStep(activeStep + 1);
-      
     }
   };
 
@@ -415,61 +730,78 @@ const MerchantSignup2 = () => {
     setActiveStep(activeStep - 1);
   };
 
-  
-
-  return (<>
-  <div className={style.formCard}>
-    <Typography align="center" variant="h4">Signup to become a Mechant</Typography>
-    <div>
-      <Stepper alternativeLabel activeStep={activeStep}>
-        {steps.map((step, index) => {
-          const labelProps = {};
-          const stepProps = {};
-          
-          return (
-            <Step {...stepProps} key={index}>
-              <StepLabel {...labelProps}>{step}</StepLabel>
-            </Step>
-          );
-        })}
-      </Stepper>
-
-      {activeStep === steps.length ? (
-        <Typography variant="h3" align="center">
-          Thank You
+  return (
+    <>
+      <div className={style.formCard}>
+        <Typography align="center" variant="h4">
+          Signup to become a Mechant
         </Typography>
-      ) : (
-        <>
-          <FormProvider {...methods}>
-            <form onSubmit={methods.handleSubmit(handleNext)}>
-              {getStepContent(activeStep)}
+        <div>
+          <Stepper alternativeLabel activeStep={activeStep}>
+            {steps.map((step, index) => {
+              const labelProps = {};
+              const stepProps = {};
 
-              <Button
-                className={classes.button}
-                disabled={activeStep === 0}
-                onClick={handleBack}
-              >
-                back
-              </Button>
-              
-              <Button
-                className={classes.button}
-                variant="contained"
-                color="primary"
-                // onClick={handleNext}
-                type="submit"
-              >
-                {activeStep === steps.length - 1 ? "Finish" : "Next"}
-              </Button>
-            </form>
-          </FormProvider>
-        </>
-      )}
-    </div>
-  </div>
-  </>  
-  )
-}
+              return (
+                <Step {...stepProps} key={index}>
+                  <StepLabel {...labelProps}>{step}</StepLabel>
+                </Step>
+              );
+            })}
+          </Stepper>
 
+          {activeStep === steps.length ? (<>
+            
+            <Alert severity="success">
+                <AlertTitle>
+                    <Typography variant="h5" align="center">
+                      You Are Now Part of ShoppingKart Family
+                    </Typography>
+                </AlertTitle>
+                 <strong>Your Are Registerd Succefully...!</strong>
+              </Alert>
+              <Alert style={{marginTop:"10px"}} severity="warning">
+                  <AlertTitle>
+                    <Typography variant="h5" align="center">
+                        Important Note
+                      </Typography>
+                  </AlertTitle>
+                  Please Check your <strong>Mail box</strong> for verfication- <strong><a href="https://mail.google.com/">check it out!</a></strong>
+              </Alert>
+            
+            </>
+          ) : (
+            <>
+              <FormProvider {...methods}>
+                <form onSubmit={methods.handleSubmit(handleNext)}>
+                  {getStepContent(activeStep)}
 
-export default MerchantSignup2
+                  <Button
+                    className={classes.button}
+                    disabled={activeStep === 0}
+                    onClick={handleBack}
+                  >
+                    back
+                  </Button>
+
+                  <Button
+                    className={classes.button}
+                    variant="contained"
+                    color="primary"
+                    // onClick={handleNext}
+                    type="submit"
+                  >
+                    {activeStep === steps.length - 1 ? "Finish" : "Next"}
+                  </Button>
+                </form>
+              </FormProvider>
+              <BackdropSpinner open={showBackdrop}/>
+            </>
+          )}
+        </div>
+      </div>
+    </>
+  );
+};
+
+export default MerchantSignup2;
