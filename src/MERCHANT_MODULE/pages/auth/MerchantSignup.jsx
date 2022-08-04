@@ -8,13 +8,9 @@ import {
   Stepper,
   Step,
   StepLabel,Box,
-  FormControl,
   RadioGroup,
   FormControlLabel,
   Radio,
-  Select,
-  FormHelperText,
-  InputLabel,
   MenuItem,
 } from "@material-ui/core";
 import { Alert, AlertTitle } from "@mui/material";
@@ -198,17 +194,19 @@ const CompanyDeltails = () => {
     formState: { errors },
   } = useFormContext();
 
-  let companytypeList = ["Bueaty", "Pharmacy", "Grooming", "Clothing","Electronic", "Hardware", "Furniture", "Appliances", "Books","Toys", "Other"];
+  let companytypeList = ["Beauty", "Pharmacy", "Grooming", "Clothing","Electronic", "Hardware", "Furniture", "Appliances", "Books","Toys", "Other"];
 
   return (
     <>
+    <Typography variant="h5"> Company Information</Typography>
+
       <Controller
         control={control}
         name="companyName"
         rules={{
           required: "Company Name required",
           minLength: { value: 4, message: "min 4 character" },
-          maxLength: { value: 20, message: "max 20 characters" },
+          maxLength: { value: 30, message: "max 30 characters" },
           pattern: {
             value: /^[a-zA-Z][a-zA-Z ]*/,
             message: "only character allowed",
@@ -276,7 +274,7 @@ const CompanyDeltails = () => {
         render={({ field }) => (
           <TextField
             id="phone-number"
-            label="Phone Number"
+            label="Company Phone Number"
             variant="outlined"
             placeholder="Enter Your Phone Number"
             fullWidth
@@ -298,7 +296,7 @@ const CompanyDeltails = () => {
         rules={{
           required: "GSTN required",
           minLength: { value: 6, message: "min 6 character" },
-          maxLength: { value: 14, message: "max 14 characters" },
+          maxLength: { value: 30, message: "max 30 characters" },
           pattern: {
             value: /^[A-Za-z0-9]*$/,
             message: "only Alphaneumeric value allow",
@@ -307,7 +305,7 @@ const CompanyDeltails = () => {
         render={({ field }) => (
           <TextField
             id="gstn"
-            label="GSTN"
+            label="Company GSTN"
             variant="outlined"
             placeholder="Enter Your GSTN"
             fullWidth
@@ -329,7 +327,7 @@ const CompanyDeltails = () => {
         rules={{
           required: "Store Registration Number required",
           minLength: { value: 6, message: "min 6 character" },
-          maxLength: { value: 14, message: "max 14 characters" },
+          maxLength: { value: 30, message: "max 30 characters" },
           pattern: {
             value: /^[A-Za-z0-9]*$/,
             message: "only Alphaneumeric value allow",
@@ -338,9 +336,9 @@ const CompanyDeltails = () => {
         render={({ field }) => (
           <TextField
             id="registerNumber"
-            label="register Number"
+            label="Company Registeration Number"
             variant="outlined"
-            placeholder="Enter Your register Number"
+            placeholder="Enter Your registeration Number"
             fullWidth
             error={Boolean(errors.registerNumber)}
             helperText={
@@ -361,7 +359,7 @@ const CompanyDeltails = () => {
         render={({ field }) => (
           <TextField
             id="webAddress"
-            label="web Address"
+            label="Company Website"
             variant="outlined"
             placeholder="Enter Your web Address"
             fullWidth
@@ -378,7 +376,7 @@ const CompanyDeltails = () => {
         rules={{
           required: "provide commission",
           min: { value: 10, message: "min 10 % commission " },
-          max: { value: 60, message: "maximum 60% commission we take" },
+          max: { value: 65, message: "maximum 65% commission we take" },
           pattern: {
             value: /^[0-9]\d*(\d+)?$/i,
             message: "only Number are allow",
@@ -437,6 +435,7 @@ const CompanyAddress = () => {
   const {
     control,
     formState: { errors },
+    setValue
   } = useFormContext();
 
   // STATE COUNTRY API
@@ -453,17 +452,20 @@ const CompanyAddress = () => {
   }, []);
 
   function enableStateDropDown(countryCode1) {
+    console.log(countryCode1)
     let allStatesData = State.getStatesOfCountry(`${countryCode1}`);
     setAllStates(allStatesData);
   }
 
   function enableCityDropDown(stateCode1) {
+    console.log(stateCode1)
     let allCityData = City.getCitiesOfState(countryCode, stateCode1);
     setAllcity(allCityData);
   }
 
   return (
     <>
+    <Typography variant="h5"> Company Adderss Details</Typography>
       <Controller
         control={control}
         name="buldingInfo"
@@ -489,10 +491,6 @@ const CompanyAddress = () => {
           required: "landmark required",
           minLength: { value: 4, message: "min 4 character" },
           maxLength: { value: 50, message: "max 50 characters" },
-          pattern: {
-            value: /^[a-zA-Z][a-zA-Z ]*/,
-            message: "only character allowed",
-          },
         }}
         render={({ field }) => (
           <TextField
@@ -504,7 +502,6 @@ const CompanyAddress = () => {
             error={errors.landmark}
             helperText={
               errors.landmark?.message ||
-              errors.landmark?.pattern ||
               errors.landmark?.minLength ||
               errors.landmark?.maxLength
             }
@@ -520,10 +517,6 @@ const CompanyAddress = () => {
           required: "please provide Street information",
           minLength: { value: 4, message: "min 4 character" },
           maxLength: { value: 150, message: "max 150 characters" },
-          pattern: {
-            value: /^[A-Za-z]+$/,
-            message: "only character allowed",
-          },
         }}
         render={({ field }) => (
           <TextField
@@ -535,7 +528,6 @@ const CompanyAddress = () => {
             error={errors.streetInfo}
             helperText={
               errors.streetInfo?.message ||
-              errors.streetInfo?.pattern ||
               errors.streetInfo?.minLength ||
               errors.streetInfo?.maxLength
             }
@@ -577,138 +569,116 @@ const CompanyAddress = () => {
         )}
       />
 
-      {/*BEGIN :: String type Country state  city */}
-      <Controller
-        control={control}
-        name="country"
-        render={({ field }) => (
-          <TextField
-            id="country"
-            label="Country"
-            variant="outlined"
-            placeholder="Enter Country"
-            fullWidth
-            required
-            margin="normal"
-            {...field}
+      {/*BEGIN :: Select Country state  city */}
+    
+
+        {/* country */}
+          <Controller
+            rules={{ requied: true }}
+            control={control}
+            name="country"
+            render={() => (
+              <>
+                <TextField
+                  select
+                  fullWidth
+                  variant="outlined"
+                  placeholder="Enter Your Country Name"
+                  label="Select country"
+                  margin="normal" 
+                  onChange={(e)=>{
+                        setValue("country",e.target.value, {shouldDirty:true})
+                        let countryCode1 = "";
+                          Country.getAllCountries().map((countryData) => {
+                            if (countryData.name === e.target.value) {
+                              setCountryCode(countryData.isoCode);
+                              countryCode1 = countryData.isoCode;
+                            }
+                          });
+                          enableStateDropDown(countryCode1);
+                  } }
+                >
+                  {allCountries.map((countryName, i) => {
+                    return (
+                      <MenuItem value={`${countryName}`} key={`${i}`}>
+                        {`${countryName}`}
+                      </MenuItem>
+                    );
+                  })}
+                </TextField>
+              </>
+            )}
           />
-        )}
-      />
-      <Controller
-        control={control}
-        name="state"
-        render={({ field }) => (
-          <TextField
-            id="state"
-            label="State"
-            variant="outlined"
-            placeholder="Enter State"
-            fullWidth
-            required
-            margin="normal"
-            {...field}
+
+        {/* state */}
+
+          <Controller
+            rules={{required:true}}
+            control={control}
+            name="state"
+            render={() => (
+              <>
+                <TextField
+                  select
+                  fullWidth
+                  label="Select State"
+                  variant="outlined"
+                  margin="normal"
+                  required 
+                  onChange={(e)=>{
+                    setValue("state", e.target.value , {shouldDirty:true})
+                        let stateCode1 = "";
+                          State.getStatesOfCountry(`${countryCode}`).map(
+                            (stateData) => {
+                              if (stateData.name === e.target.value) {
+                                stateCode1 = stateData.isoCode;
+                              }
+                            }
+                          );
+                          enableCityDropDown(stateCode1);
+                  }}
+                >
+                  {allStates.map((stateName, j) => {
+                    return (
+                      <MenuItem
+                        value={`${stateName.name}`}
+                        key={`${j}`}
+                      >{`${stateName.name}`}</MenuItem>
+                    );
+                  })}
+                </TextField>
+              </>
+            )}
           />
-        )}
-      />
-      <Controller
-        control={control}
-        name="city"
-        render={({ field }) => (
-          <TextField
-            id="city"
-            label="City"
-            variant="outlined"
-            placeholder="Enter city"
-            fullWidth
-            required
-            margin="normal"
-            {...field}
+
+        {/*   city */}
+
+          <Controller
+            rules={{ required: true }}
+            control={control}
+            name="city"
+            render={({ field }) => (
+              <TextField
+                select
+                fullWidth
+                label="City Name"
+                variant="outlined"
+                margin="normal"
+                {...field}
+              >
+                {allCity.map((cityName, k) => {
+                          return (
+                            <MenuItem
+                              value={`${cityName.name}`}
+                              key={`${k}`}
+                            >{`${cityName.name}`}</MenuItem>
+                          );
+                })}
+              </TextField>
+            )}
           />
-        )}
-      />
       {/*END :: String type Country state  city */}
 
-      {/* country */}
-      {/* <Controller
-        rules={{ requied: true }}
-        control={control}
-        name="country"
-        render={({ field }) => (
-          <>
-            <TextField
-              select
-              fullWidth
-              variant="outlined"
-              placeholder="Enter Your Country Name"
-              label="Select country"
-              {...field}
-            >
-              {allCountries.map((countryName, i) => {
-                return (
-                  <MenuItem value={`${countryName}`} key={`${i}`}>
-                    {`${countryName}`}
-                  </MenuItem>
-                );
-              })}
-            </TextField>
-          </>
-        )}
-      /> */}
-
-      {/* state */}
-
-      {/* <Controller
-        rules={{ required: true }}
-        control={control}
-        name="state"
-        render={({ field }) => (
-          <>
-            <TextField
-              select
-              fullWidth
-              label="Select State"
-              variant="outlined"
-              id="state"
-              {...field}
-            >
-              {allStates.map((stateName, j) => {
-                return (
-                  <MenuItem
-                    value={`${stateName.name}`}
-                    key={`${j}`}
-                  >{`${stateName.name}`}</MenuItem>
-                );
-              })}
-            </TextField>
-          </>
-        )}
-      /> */}
-
-      {/*   city */}
-
-      {/* <Controller
-        rules={{ required: true }}
-        control={control}
-        name="city"
-        render={({ field }) => (
-          <TextField
-            select
-            fullWidth
-            label="Select City"
-            variant="outlined"
-            {...field}
-          >
-            {allCity.map((cityName, k) => {
-              return (
-                <MenuItem
-                  value={`${cityName.name}`}
-                  key={`${k}`}
-                >{`${cityName.name}`}</MenuItem>
-              );
-            })}
-          </TextField>
-        )}
-      /> */}
     </>
   );
 };
@@ -729,6 +699,7 @@ function getStepContent(step) {
 const MerchantSignup2 = () => {
   const classes = useStyles();
   const methods = useForm({
+    
     defaultValues: {
       firstName: "",
       lastName: "",
@@ -800,7 +771,8 @@ const MerchantSignup2 = () => {
         setActiveStep(activeStep + 1);
       } catch (error) {
         console.log(error);
-        toast.error(error.message);
+        let errMessage = error.response.data.data
+        toast.error(errMessage);
         setShowBackdrop(false);
       }
     } else {
