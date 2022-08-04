@@ -3,7 +3,7 @@ import foot from "./footer.module.css";
 import { IoMdBriefcase, IoIosHelpCircle } from "react-icons/io";
 import { MdStars } from "react-icons/md";
 import { FaGift } from "react-icons/fa";
-
+import { Link } from "react-router-dom";
 const Footer = () => {
   return (
     <section className={foot.footer_Section}>
@@ -11,36 +11,36 @@ const Footer = () => {
         <div className={foot.footer_Links}>
           <div className={foot.footer_about}>
             <div>ABOUT</div>
-            <div>About Us</div>
-            <div>Contact Us</div>
-            <div>Careers</div>
-            <div>ShoppingKart Stories</div>
-            <div>Press</div>
-            <div>ShoppingKart Wholesale</div>
-            <div>Corporate Information</div>
+            <div><Link to="#">About Us</Link></div>
+            <div><Link to="#">Contact Us</Link></div>
+            <div><Link to="#">Careers</Link></div>
+            <div><Link to="#">ShoppingKart Stories</Link></div>
+            <div><Link to="#">Press</Link></div>
+            <div><Link to="#">ShoppingKart Wholesale</Link></div>
+            <div><Link to="#">Corporate Information</Link></div>
           </div>
           <div className={foot.footer_help}>
             <div>HELP</div>
-            <div>Payments</div>
-            <div>Shipping</div>
-            <div>Cancellation & Returns</div>
-            <div>FAQ</div>
-            <div>Report Infringement</div>
+            <div><Link to="#">Payments</Link></div>
+            <div><Link to="#">Shipping</Link></div>
+            <div><Link to="#">Cancellation & Returns</Link></div>
+            <div><Link to="#">FAQ</Link></div>
+            <div><Link to="#">Report Infringement</Link></div>
           </div>
           <div className={foot.footer_policy}>
             <div>POLICY</div>
-            <div>Return Policy</div>
-            <div>Terms Of Use</div>
-            <div>Security</div>
-            <div>Privacy</div>
-            <div>Sitemap</div>
-            <div>EPR Compliance</div>
+            <div><Link to="#">Return Policy</Link></div>
+            <div><Link to="#">Terms Of Use</Link></div>
+            <div><Link to="#">Security</Link></div>
+            <div><Link to="#">Privacy</Link></div>
+            <div><Link to="#">Sitemap</Link></div>
+            <div><Link to="#">EPR Compliance</Link></div>
           </div>
           <div className={foot.footer_social}>
             <div>SOCIAL</div>
-            <div>Facebook</div>
-            <div>Twitter</div>
-            <div>YouTube</div>
+            <div><Link to="#">Facebook</Link></div>
+            <div><Link to="#">Twitter</Link></div>
+            <div><Link to="#">YouTube</Link></div>
           </div>
         </div>
         <div className={foot.sideBorder}></div>
@@ -70,25 +70,25 @@ const Footer = () => {
           <span>
             <IoMdBriefcase />
           </span>
-          <span>Become a Seller</span>
+          <span><Link to="merchant-signup" >Become a Seller</Link></span>
         </div>
         <div className={foot.Advertise}>
           <span>
             <MdStars />
           </span>
-          <span>Advertise</span>
+          <span><Link to="#" >Advertise</Link></span>
         </div>
         <div className={foot.gift}>
           <span>
             <FaGift />
           </span>
-          <span>Gift Cards</span>
+          <span><Link to="#" >Gift Cards</Link></span>
         </div>
         <div className={foot.helpCenter}>
           <span>
             <IoIosHelpCircle />
           </span>
-          <span>Help Center</span>
+          <span><Link to="#">Help Center</Link></span>
         </div>
         <div className={foot.tradeMark}>© 2007-2022 ShoppingKart.com</div>
         <div className={foot.payments}>

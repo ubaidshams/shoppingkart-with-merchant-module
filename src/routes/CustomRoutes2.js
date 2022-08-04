@@ -20,8 +20,8 @@ import Welcome from "../components/welcomepage/Welcome";
 
 
 // !--------------- MERCHANT MOUDULE IMPORTS------------ //
-import MerchantSignup from "../MERCHANT_MODULE/pages/auth/Signup"
-import MerchantSignup2 from "../MERCHANT_MODULE/pages/auth/MerchantSignup2";
+// import MerchantSignup from "../MERCHANT_MODULE/pages/auth/Signup"
+import MerchantSignup from "../MERCHANT_MODULE/pages/auth/MerchantSignup";
 
 // !--------------- MERCHANT MOUDULE IMPORTS------------ //
 
@@ -44,10 +44,7 @@ const CustomRoutes2 = () => {
       path:"merchant-signup",
       element:<MerchantSignup />
     },
-    {
-      path:"m-signup",
-      element:<MerchantSignup2/>
-    }
+
   ]);
   return myRoutes;
 };
