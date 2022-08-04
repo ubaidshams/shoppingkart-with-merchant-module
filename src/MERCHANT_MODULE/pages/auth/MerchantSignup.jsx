@@ -834,9 +834,7 @@ const MerchantSignup2 = () => {
 
                   <Box style={{display:"flex",justifyContent:"space-between", marginTop:"10px"}}>
                         
-                        {activeStep===0 ? (<Button className={classes.button} disabled >Back</Button>) :
-                              (<Button className={classes.button} variant="contained" color="secondary" onClick={handleBack}>Back</Button>)
-                       }
+                        <Button className={classes.button} variant="contained" color="secondary" disabled={activeStep===0} onClick={handleBack} >Back</Button>
 
                         <Button
                           className={classes.button}
