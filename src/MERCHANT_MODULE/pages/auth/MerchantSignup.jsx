@@ -10,7 +10,7 @@ import {
   StepLabel,Box,
   RadioGroup,
   FormControlLabel,
-  Radio,
+  Radio,Card, Checkbox,
   MenuItem,
 } from "@material-ui/core";
 import { Alert, AlertTitle } from "@mui/material";
@@ -23,6 +23,7 @@ import {
 } from "react-hook-form";
 import { Country, State, City } from "country-state-city";
 import Axios from "../../../apis/Axios";
+import TermsConditions from "./TermsAndConditions"
 import BackdropSpinner from "../../../components/spinner/BackdropSpinner";
 
 const useStyles = makeStyles((theme) => ({
@@ -438,6 +439,9 @@ const CompanyAddress = () => {
     setValue
   } = useFormContext();
 
+  // tems and Conditon model
+  const [model , setModel]=useState(false)
+  const [btnCondition , setBtnCondition]= useState(false)
   // STATE COUNTRY API
   const [allCountries, setAllCountries] = useState([]);
   const [countryCode, setCountryCode] = useState("IN");
@@ -477,7 +481,7 @@ const CompanyAddress = () => {
             variant="outlined"
             placeholder="Bulding no/ House no"
             fullWidth
-            error={errors.buldingInfo}
+            error={Boolean(errors.buldingInfo)}
             helperText={errors.buldingInfo?.message}
             margin="normal"
             {...field}
@@ -499,7 +503,7 @@ const CompanyAddress = () => {
             variant="outlined"
             placeholder="Enter landmark"
             fullWidth
-            error={errors.landmark}
+            error={Boolean(errors.landmark)}
             helperText={
               errors.landmark?.message ||
               errors.landmark?.minLength ||
@@ -525,7 +529,7 @@ const CompanyAddress = () => {
             variant="outlined"
             placeholder="Enter streetInfo"
             fullWidth
-            error={errors.streetInfo}
+            error={Boolean(errors.streetInfo)}
             helperText={
               errors.streetInfo?.message ||
               errors.streetInfo?.minLength ||
@@ -556,7 +560,7 @@ const CompanyAddress = () => {
             variant="outlined"
             placeholder="Enter pincode"
             fullWidth
-            error={errors.pincode}
+            error={Boolean(errors.pincode)}
             helperText={
               errors.pincode?.message ||
               errors.pincode?.pattern ||
@@ -678,6 +682,68 @@ const CompanyAddress = () => {
             )}
           />
       {/*END :: String type Country state  city */}
+        
+      {/* BEGIN :: Terms and Condition Modal */}
+      <Card
+            className={""}
+            elevation={0}
+            style={{ backgroundColor: "transparent" }}
+  
+          >
+                <Controller control={control}
+                rules={{required:""}}
+                name="termAndCondition" 
+                render={({field})=>(
+                  <>
+                    <span
+                        style={{ marginLeft: "300px", display: "flex", width: "350px" }}
+                      >
+                        <FormControlLabel
+                          style={{ width: "35px" }}
+                          {...field}
+                          required
+                          value="other"
+                          checked={btnCondition}
+                          onClick={() => {
+                            setModel();
+                            setModel(true);
+                          }}
+                          control={<Checkbox required />}
+                        />
+                        <span
+                          style={{
+                            display: "inline-block",
+                            width: "300px",
+                            marginTop: "12px",
+                          }}
+                        >
+                          I agree to the{" "}
+                          <a
+                            href="#"
+                            onClick={() => {
+                              setModel(true);
+                            }}
+                          >
+                            Terms Conditions
+                          </a>
+                          *
+                        </span>
+                      </span>
+                  </>
+                )}
+                />
+          </Card>
+          <Card style={{ marginLeft: "300px" }}>
+            {model && (
+              <TermsConditions
+                modelCondition={setModel}
+                condition={setBtnCondition}
+              />
+            )}
+          </Card>
+      
+      {/* END  :: Terms and Conditon Modal */}
+
 
     </>
   );
@@ -723,6 +789,7 @@ const MerchantSignup2 = () => {
       type: "",
       pincode: "",
       streetInfo: "",
+      termAndCondition:false
     },
   });
   const [activeStep, setActiveStep] = useState(0);

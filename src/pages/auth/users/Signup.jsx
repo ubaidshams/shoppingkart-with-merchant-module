@@ -290,8 +290,7 @@ const Signup = () => {
           <Card
             className={clsx(style.formCardContainer, style.Checkbox)}
             elevation={0}
-            style={{ backgroundColor: "transparent" }}
-            onc
+            style={{ backgroundColor: "transparent" }}      
           >
             <span
               style={{ marginLeft: "300px", display: "flex", width: "350px" }}

@@ -7,7 +7,7 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import { Checkbox, FormControlLabel } from "@mui/material";
 import ClearIcon from "@mui/icons-material/Clear";
-import termsStyle from "./TermsCondtions.module.css";
+import termsStyle from "./termsConditions.module.css";
 
 export default function TermsConditions({ condition, modelCondition }) {
   const [open, setOpen] = React.useState(true);
