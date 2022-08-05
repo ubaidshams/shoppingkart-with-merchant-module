@@ -20,7 +20,7 @@ import Welcome from "../components/welcomepage/Welcome";
 
 
 // !--------------- MERCHANT MOUDULE IMPORTS------------ //
-import MerchantSignup from "../MERCHANT_MODULE/pages/auth/Signup"
+import MerchantSignup from "../MERCHANT_MODULE/pages/auth/MerchantSignup";
 import Home from '../MERCHANT_MODULE/home/Home';
 
 // !--------------- MERCHANT MOUDULE IMPORTS------------ //

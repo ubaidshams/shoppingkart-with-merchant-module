@@ -76,3 +76,29 @@
   height: 100px;
   object-fit: contain;
 }
+
+.footer_about div a{
+  color: #fff;
+}
+.footer_help div a{
+  color: #fff;
+}
+.footer_policy div a{
+  color: #fff;
+} 
+.footer_social div a{
+  color: #fff;
+}
+
+.Seller span a{
+  color: #fff;
+}
+.gift span a{
+  color: #fff;
+}
+.Advertise span a{
+  color: #fff;
+}
+.helpCenter span a{
+  color: #fff;
+}
