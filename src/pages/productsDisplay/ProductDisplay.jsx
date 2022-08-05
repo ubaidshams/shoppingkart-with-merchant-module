@@ -20,7 +20,7 @@ import StarRatings from "../../components/starRating/StarRatings";
 import CalculateOffer from "../../components/Offer Helper Components/CalculateOffer";
 import { Box, Grid } from "@mui/material";
 import { AiOutlineDown } from "react-icons/ai";
-import ReactImageZoom from "react-image-zoom";
+// import ReactImageZoom from "react-image-zoom";
 
 const useStyles = makeStyles(theme => ({
   heading: {
@@ -152,6 +152,12 @@ const ProductDisplay = () => {
                   );
                 })}
             </Carousel>
+            <div className={style.detailDescription}>
+              <summary>
+                <h3>Detailed Description</h3>
+                <h4>{description}</h4>
+              </summary>
+            </div>
           </section>
           <footer className={style.imgCardFooterCard}>
             {currentProduct.price > 1000 && <span>free Delivery</span>}
@@ -358,12 +364,6 @@ const ProductDisplay = () => {
             <Grid></Grid>
           </Box>
         </div>
-      </div>
-      <div className={style.detailDescription}>
-        <summary>
-          <h3>Detailed Description</h3>
-          <h4>{description}</h4>
-        </summary>
       </div>
     </div>
   );

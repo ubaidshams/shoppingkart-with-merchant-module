@@ -1,41 +1,37 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Card, TextField, makeStyles, Checkbox } from "@material-ui/core";
+import { Accordion, AccordionSummary, AccordionDetails } from "@mui/material";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import Radio from "@material-ui/core/Radio";
 import RadioGroup from "@material-ui/core/RadioGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import FormLabel from "@material-ui/core/FormLabel";
 import style from "./signup.module.css";
 import { motion } from "framer-motion";
+import { Country, State, City } from "country-state-city";
 import Axios from "../../../apis/Axios";
-import { useForm } from "react-hook-form";
 import MenuItem from "@material-ui/core/MenuItem";
 import Select from "@material-ui/core/Select";
 import "animate.css";
 import clsx from "clsx";
-import TermsConditions from "../TermsConditions";
+import TermsConditions from "../../../pages/auth/TermsConditions";
 import InputLabel from "@material-ui/core/InputLabel";
 import FormHelperText from "@material-ui/core/FormHelperText";
 import FormControl from "@material-ui/core/FormControl";
 import { toast } from "react-toastify";
 import { useDispatch } from "react-redux";
-import { OpenLogin } from "../../../features/Login/LoginSlice";
+// import { OpenLogin } from "../../../features/Login/LoginSlice";
 import BackdropSpinner from "../../../components/spinner/BackdropSpinner";
 // import { motion, Variants } from "framer-motion";
-import {
-  emailRegex,
-  phoneRegex,
-  firstNameRegex,
-  lastNameRegex,
-} from "../../../validation/Regex";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   margin: {
     margin: theme.spacing(1),
     width: 50,
   },
   formTextFieldName: {
-    width: 200,
+    width: 300,
     // paddingLeft: 15,
     spacing: 5,
     marginTop: 3,
@@ -78,57 +74,53 @@ const Signup = () => {
   // Loading state
   const [showBackdrop, setShowBackdrop] = useState(false);
 
+  // Merchant user Details
   const [fname, setFname] = useState("");
   const [lname, setLname] = useState("");
-  const [email, setEmail] = useState("");
-  let [error, setError] = useState(false);
-
-  const [password, setPassword] = useState("nopassword");
-  const [role, setRole] = useState("");
   const [gender, setGender] = useState("male");
+  const [email, setEmail] = useState("");
+  const [commission, setCommission] = useState("");
+
+  // company Details
+  const [companyEmail, setCompanyEmail] = useState("");
+  const [registerNumber, setRegisterNumber] = useState("");
+  const [gstn, setGstn] = useState("");
+  const [companyName, setCompanyName] = useState("");
+  const [companyPhone, setCompanyPhone] = useState("");
+  const [companyWebAddress, setCompanyWebAddress] = useState("");
+  const [companyType, setCompanyType] = useState("");
+
+  // Address Details of Company
+
+  const [allCountries, setAllCountries] = useState([]);
+  const [countryCode, setCountryCode] = useState("IN");
+  const [allStates, setAllStates] = useState([]);
+  const [allCity, setAllcity] = useState([]);
+
   const [payload, setPayload] = useState({});
   const [btnCondition, setBtnCondition] = useState(false);
   const [model, setModel] = useState(false);
-  const [phone, setPhone] = useState("");
-
-  const [message, setMessage] = useState("");
+  const [number1, setNumber1] = useState();
+  const [password, setPassword] = useState("nopassword");
 
   useEffect(() => {
-    if (
-      emailRegex.test(email) &&
-      phoneRegex.test(phone) &&
-      firstNameRegex.test(fname) &&
-      lastNameRegex.test(lname)
-    )
-      setError(false);
-    else setError(true);
-  }, [email, phone, fname, lname]);
+    let allCountriesData = Country.getAllCountries().map((countryData) => {
+      return countryData.name;
+    });
+    setAllCountries(allCountriesData);
+  }, []);
 
-  // const emailValidation = () => {
-  //   const regEx = /[a-zA-Z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,8}(.[a-z{2,8}])?/g;
-  //   console.log(regEx.test(email));
-  //   if (regEx.test(email)) {
-  //     setMessage("Valid Email");
-  //   } else {
-  //     setMessage("invalid email");
-  //   }
-  // };
+  function enableStateDropDown(countryCode1) {
+    let allStatesData = State.getStatesOfCountry(`${countryCode1}`);
+    setAllStates(allStatesData);
+  }
 
-  // const phoneValidation = () => {
-  //   const regEx = /^([+]?[\s0-9]+)?(\d{3}|[(]?[0-9]+[)])?([-]?[\s]?[0-9])+$/i;
-  //   if (regEx.test(phone)) {
-  //     setMessage("Valid phone");
-  //   } else {
-  //     setMessage("invalid phone");
-  //   }
-  // };
+  function enableCityDropDown(stateCode1) {
+    let allCityData = City.getCitiesOfState(countryCode, stateCode1);
+    setAllcity(allCityData);
+  }
 
-  const onAgreeTC = tcAccepted => {
-    setBtnCondition(tcAccepted);
-  };
-  // const navigate = useNavigate()
-
-  const handleSubmit = async e => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setShowBackdrop(true);
     let currPayload = {
@@ -137,11 +129,8 @@ const Signup = () => {
       email,
       password,
       gender,
-      phone,
-      role: ["CUSTOMER"],
+      phone: number1,
       addressList: [],
-      wishList: [],
-      cartList: [],
     };
     setPayload(currPayload);
     console.log(payload);
@@ -154,23 +143,22 @@ const Signup = () => {
   const header = {
     verifyUrl: "http://localhost:3000/reset",
   };
-  const fetchData = async currPayload => {
+  const fetchData = async (currPayload) => {
     try {
       await Axios.post("/customers", currPayload, { headers: header });
       console.log("user registered....");
-    } catch (err) {
-      toast.error(err.message);
-      console.log(err.message);
+    } catch (error) {
+      toast.error(error.message);
+      console.log(error.message);
     }
   };
 
   return (
     <>
-      {message}
       <br />
       <motion.div className={clsx(style.formCard)}>
-        <h1>Create Your Profile</h1>
-        <section>
+        <h1>SignUp to Become a Merchant</h1>
+        {/* <section>
           One profile ID is all you need to access all KART services. You
           already have a profile?{" "}
           <a
@@ -179,9 +167,9 @@ const Signup = () => {
               navigate("/");
             }}
           >
-            Sign In
+            Find it here{" "}
           </a>
-        </section>
+        </section> */}
         <form onSubmit={handleSubmit}>
           <Card
             style={{ backgroundColor: "transparent" }}
@@ -196,19 +184,9 @@ const Signup = () => {
               variant="outlined"
               required
               value={fname}
-              onChange={e => {
+              onChange={(e) => {
                 setFname(e.target.value);
               }}
-              error={fname != "" && firstNameRegex.test(fname) === false}
-              helperText={
-                fname != "" && /^[a-zA-Z_. ]+$/g.test(fname) === false
-                  ? "must be alphabets"
-                  : (fname != "" && fname.length < 3) || fname.length > 20
-                  ? "char should be between 3-20"
-                  : fname != "" && firstNameRegex.test(fname) === false
-                  ? "invalid first name"
-                  : ""
-              }
             ></TextField>
             <TextField
               className={classes.formTextFieldName}
@@ -218,21 +196,45 @@ const Signup = () => {
               variant="outlined"
               required
               value={lname}
-              onChange={e => {
+              onChange={(e) => {
                 setLname(e.target.value);
               }}
-              error={lname != "" && lastNameRegex.test(lname) === false}
-              helperText={
-                lname != "" && /^[a-zA-Z_. ]+$/g.test(lname) === false
-                  ? "must be alphabets"
-                  : (lname != "" && lname.length < 3) || lname.length > 20
-                  ? "char should be between 3-20"
-                  : lname != "" && firstNameRegex.test(lname) === false
-                  ? "invalid last name"
-                  : ""
-              }
             ></TextField>
           </Card>
+
+          <Card
+            style={{ backgroundColor: "transparent" }}
+            elevation={0}
+            className={style.formCardContainer}
+          >
+            <TextField
+              className={classes.formTextFieldName}
+              size="small"
+              label="Phone Number"
+              required
+              type="tel"
+              placeholder="9856412537"
+              id="outlined-size-small"
+              variant="outlined"
+              value={number1}
+              onChange={(e) => setNumber1(e.target.value)}
+            ></TextField>
+
+            <TextField
+              className={classes.formTextFieldName}
+              size="small"
+              label="Email Address"
+              id="outlined-size-small email"
+              variant="outlined"
+              placeholder="exmaple@company.com"
+              required
+              value={email}
+              onChange={(e) => {
+                setEmail(e.target.value);
+              }}
+            ></TextField>
+          </Card>
+
           <Card
             elevation={0}
             style={{ backgroundColor: "transparent" }}
@@ -242,7 +244,7 @@ const Signup = () => {
               aria-label="gender"
               name="gender1"
               value={gender}
-              onChange={e => setGender(e.target.value)}
+              onChange={(e) => setGender(e.target.value)}
             >
               <section
                 style={{
@@ -274,7 +276,56 @@ const Signup = () => {
               </section>
             </RadioGroup>
           </Card>
-          {/* phone phone mandatory */}
+
+          {/* BEGIN :: COMPANY DEATILS  */}
+          
+            <Accordion className={style.accordionBar}>
+              <AccordionSummary
+                expandIcon={<ExpandMoreIcon />}
+                aria-controls="panel1a-content"
+                id="panel1a-header"
+              >
+                <h2>Company Detalis</h2>
+              </AccordionSummary>
+              <AccordionDetails>
+                <h1>OUr form Data should render here</h1>
+                <Card
+                    style={{ backgroundColor: "transparent" }}
+                    elevation={0}
+                    className={style.formCardContainer}
+                  >
+                    <TextField
+                      className={classes.formTextFieldName}
+                      size="small"
+                      label="First Name"
+                      id="outlined-size-small"
+                      variant="outlined"
+                      required
+                      value={fname}
+                      onChange={(e) => {
+                        setFname(e.target.value);
+                      }}
+                    ></TextField>
+                    <TextField
+                      className={classes.formTextFieldName}
+                      size="small"
+                      label="Last Name"
+                      id="outlined-size-small"
+                      variant="outlined"
+                      required
+                      value={lname}
+                      onChange={(e) => {
+                        setLname(e.target.value);
+                      }}
+                    ></TextField>
+                  </Card>
+              </AccordionDetails>
+            </Accordion>
+        
+
+          {/* END :: COMPANY DEATILS  */}
+
+          {/* phone number1 mandatory */}
           <Card
             elevation={0}
             style={{ backgroundColor: "transparent" }}
@@ -288,18 +339,8 @@ const Signup = () => {
               placeholder="9856412537"
               id="outlined-size-small"
               variant="outlined"
-              value={phone}
-              onChange={e => setPhone(e.target.value)}
-              error={phone != "" && phoneRegex.test(phone) === false}
-              helperText={
-                phone != "" &&
-                isNaN(Number(phone)) == false &&
-                phone.length != 10
-                  ? "must be 10 digit"
-                  : phone != "" && phoneRegex.test(phone) === false
-                  ? "must be numberic only"
-                  : ""
-              }
+              value={number1}
+              onChange={(e) => setNumber1(e.target.value)}
             ></TextField>
           </Card>
           {/* number2 optional */}
@@ -317,18 +358,12 @@ const Signup = () => {
               label="Email Address"
               id="outlined-size-small email"
               variant="outlined"
-              placeholder="example@company.com"
+              placeholder="exmaple@company.com"
               required
               value={email}
-              onChange={e => {
+              onChange={(e) => {
                 setEmail(e.target.value);
               }}
-              error={email != "" && emailRegex.test(email) === false}
-              helperText={
-                email != "" && emailRegex.test(email) === false
-                  ? "invalid email"
-                  : ""
-              }
             ></TextField>
           </Card>
           <Card
@@ -345,7 +380,7 @@ const Signup = () => {
               required
               value={password}
               type="password"
-              onChange={e => {
+              onChange={(e) => {
                 setPassword(e.target.value);
               }}
             ></TextField>
@@ -372,6 +407,7 @@ const Signup = () => {
             className={clsx(style.formCardContainer, style.Checkbox)}
             elevation={0}
             style={{ backgroundColor: "transparent" }}
+            onc
           >
             <span
               style={{ marginLeft: "300px", display: "flex", width: "350px" }}
@@ -414,7 +450,6 @@ const Signup = () => {
               <TermsConditions
                 modelCondition={setModel}
                 condition={setBtnCondition}
-                onAgreeTC={onAgreeTC}
               />
             )}
           </Card>
@@ -424,13 +459,7 @@ const Signup = () => {
             style={{ backgroundColor: "transparent" }}
             className={style.formCardContainer}
           >
-            {btnCondition && !error ? (
-              <button className={style.bn5}>Register</button>
-            ) : (
-              <button className={style.bn5Disabled} disabled={true}>
-                Register
-              </button>
-            )}
+            <button className={style.bn5}>Register</button>
           </Card>
         </form>
         <BackdropSpinner open={showBackdrop} />

@@ -17,6 +17,14 @@ import Reset from "../pages/auth/users/Reset";
 import Order from "../pages/profile/Order";
 
 import Welcome from "../components/welcomepage/Welcome";
+
+
+// !--------------- MERCHANT MOUDULE IMPORTS------------ //
+import MerchantSignup from "../MERCHANT_MODULE/pages/auth/Signup"
+import Home from '../MERCHANT_MODULE/home/Home';
+
+// !--------------- MERCHANT MOUDULE IMPORTS------------ //
+
 const CustomRoutes2 = () => {
   let myRoutes = useRoutes([
     {
@@ -31,6 +39,14 @@ const CustomRoutes2 = () => {
     {
       path: "/forgot",
       element: <Forget />,
+    },
+    {
+      path: "merchant-signup",
+      element: <MerchantSignup />,
+    },
+    {
+      path: "merchant/home",
+      element: <Home/>,
     },
   ]);
   return myRoutes;
