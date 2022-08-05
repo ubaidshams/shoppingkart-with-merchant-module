@@ -20,7 +20,9 @@ import StarRatings from "../../components/starRating/StarRatings";
 import CalculateOffer from "../../components/Offer Helper Components/CalculateOffer";
 import { Box, Grid } from "@mui/material";
 import { AiOutlineDown } from "react-icons/ai";
+
 import ReactImageZoom from "react-image-zoom";
+
 
 const useStyles = makeStyles(theme => ({
   heading: {
@@ -192,14 +194,18 @@ const ProductDisplay = () => {
               aria-controls="panelstar-content"
               id="panelstar-header"
             >
+
               <div className={style.starHeading}>
                 <StarRatings rating={currentProduct.rating} />
               </div>
+
             </AccordionSummary>
             <AccordionDetails>
               <div className={style.ratingsContainer}>
                 <div className={style.productRatings}>
+
                   <label>
+
                     <h3>5 Star:</h3>
                   </label>
                   <progress
@@ -216,7 +222,9 @@ const ProductDisplay = () => {
                 </div>
 
                 <div className={style.productRatings}>
+
                   <label>
+
                     <h3>4 Star:</h3>
                   </label>
                   <progress
@@ -233,7 +241,9 @@ const ProductDisplay = () => {
                 </div>
 
                 <div className={style.productRatings}>
+
                   <label>
+
                     <h3>3 Star:</h3>
                   </label>
                   <progress
@@ -250,7 +260,9 @@ const ProductDisplay = () => {
                 </div>
 
                 <div className={style.productRatings}>
+
                   <label>
+
                     <h3>2 Star:</h3>
                   </label>
                   <progress
@@ -267,7 +279,9 @@ const ProductDisplay = () => {
                 </div>
 
                 <div className={style.productRatings}>
+
                   <label>
+
                     <h3>1 Star:</h3>
                   </label>
                   <progress
