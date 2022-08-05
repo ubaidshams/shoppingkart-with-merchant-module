@@ -13,8 +13,9 @@ import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import "./profile.css";
-import { editProfile } from "../../features/User/userSlice";
-import {useNavigate} from "react-router-dom"
+import { createCurrentUser, editProfile } from "../../features/User/userSlice";
+import { useNavigate } from "react-router-dom";
+import Axios from "../../apis/Axios";
 
 let initialState = {
   firstName: "",
@@ -27,15 +28,25 @@ let initialState = {
 function EditProfile({ open, onClose }) {
   let currentUser = useSelector(state => state.user.currentUser);
 
-  let navigate = useNavigate()
+  let navigate = useNavigate();
 
   let [userData, setUserData] = useState(initialState);
+  let [error, setError] = useState({});
   const dispatch = useDispatch();
 
+  const getUser = async () => {
+    try {
+      let { data } = await Axios.get(`/customers/${currentUser.userId}`);
+      setUserData(data);
+    } catch (error) {
+      setError(error);
+      setUserData(error.response.data.data);
+      // console.log(error);
+    }
+  };
   useEffect(() => {
-    setUserData({ ...currentUser });
-  }, [currentUser]);
-
+    getUser();
+  }, []);
   const handleChange = e => {
     let value = e.target.value;
     setUserData(pre => ({ ...pre, [e.target.name]: value }));
@@ -44,14 +55,18 @@ function EditProfile({ open, onClose }) {
   const handleSubmit = async e => {
     e.preventDefault();
     try {
-      let updatedUserData ={
+      let updatedUserData = {
         id: currentUser.userId,
-        payload: {...userData}
-      }
-      dispatch(editProfile(updatedUserData))
-      onClose()
-      toast.success("successfully updated");
-      navigate("/my-profile/my-profile-info")
+        payload: { ...userData },
+      };
+      dispatch(editProfile(updatedUserData));
+
+      dispatch(createCurrentUser({ currentUser: userData }));
+      setTimeout(() => {
+        onClose();
+        toast.success("successfully updated");
+        navigate("/my-profile/my-profile-info");
+      }, 300);
     } catch (err) {
       toast.error(err);
     }

@@ -18,7 +18,7 @@ const CalculateOffer = ({ originPrice, offerPercentage }) => {
       <p className={Style.wrapper}>
         <span>₹{offerPrice}</span>
         <span>₹{originPrice}</span>
-        <span>{Math.floor(Math.random() * (15 - 5) + 5)}% off</span>
+        <span>{offerPercentage}% off</span>
       </p>
     </div>
   );

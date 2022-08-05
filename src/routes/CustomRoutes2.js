@@ -21,6 +21,7 @@ import Welcome from "../components/welcomepage/Welcome";
 
 // !--------------- MERCHANT MOUDULE IMPORTS------------ //
 import MerchantSignup from "../MERCHANT_MODULE/pages/auth/MerchantSignup";
+import Home from '../MERCHANT_MODULE/home/Home';
 
 // !--------------- MERCHANT MOUDULE IMPORTS------------ //
 
@@ -40,10 +41,13 @@ const CustomRoutes2 = () => {
       element: <Forget />,
     },
     {
-      path:"merchant-signup",
-      element:<MerchantSignup />
+      path: "merchant-signup",
+      element: <MerchantSignup />,
     },
-
+    {
+      path: "merchant/home",
+      element: <Home/>,
+    },
   ]);
   return myRoutes;
 };

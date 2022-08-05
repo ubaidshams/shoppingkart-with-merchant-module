@@ -17,7 +17,7 @@ const SubTotal = () => {
   }, [cart]);
 
   const buyProduct = () => {
-    navigate("/checkout");
+    navigate("/selectaddress");
   };
 
   return (
@@ -29,15 +29,24 @@ const SubTotal = () => {
         <input type="checkbox" name="gift" id="gift" />
         <label htmlFor="gift">This order contains a gift</label>
       </div>
-      <Link to="/selectaddress">
+      
         {" "}
         <button
-          disabled={cart.cartItems.length === 0 ? true : false}
+          disabled={cart.cartItems?.length === 0 ? true : false}
           onClick={buyProduct}
         >
           Proceed to Buy
         </button>
-      </Link>
+      
+      <h3>Or</h3>
+      <button
+        onClick={e => {
+          e.stopPropagation();
+          navigate(`/Home`);
+        }}
+      >
+        Continue Shopping
+      </button>
     </div>
   );
 };
