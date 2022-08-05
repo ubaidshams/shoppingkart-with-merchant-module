@@ -3,14 +3,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchProducts } from "../../features/products/productSlice";
 import Spinner from "./../spinner/Spinner";
 import styles from "./featuredProducts.module.css";
-import {
-  addToCart,
-  getCart,
-  deleteFromCart,
-} from "../../features/cart/cartSlice";
+import { addToCart, getCart } from "../../features/cart/cartSlice";
 import { useNavigate } from "react-router-dom";
 import PaginationComp from "../pagination/PaginationComp";
-import { AiOutlineHeart } from "react-icons/ai";
+
 import {
   addToWishlist,
   deleteFromWishlist,
@@ -36,7 +32,7 @@ const FeaturedProducts = () => {
   let [prodList, setProdList] = useState([]);
   let [currentPage, setCurrentPage] = useState(1);
   let cardPerPage = 12;
-  let totalPages = Math.ceil(product.productList.length / cardPerPage);
+  let totalPages = Math.ceil(product.productList?.length / cardPerPage);
   const userId = useSelector(state => state.user.currentUser.userId);
 
   const setPage = () => {
@@ -48,7 +44,7 @@ const FeaturedProducts = () => {
       start = currentPage * cardPerPage - cardPerPage;
       end = currentPage * cardPerPage;
     }
-    setProdList(product.productList.slice(start, end));
+    setProdList(product.productList?.slice(start, end));
   };
   useEffect(() => {
     setPage();
@@ -65,9 +61,9 @@ const FeaturedProducts = () => {
       .catch(err => console.log(err));
   }, []);
   useEffect(() => {
-    setIdList(cartList.map(item => item.productId));
-    setCartIdList(cartlist.map(item => item.productId))
-  }, [cartList,cartlist]);
+    setIdList(cartList?.map(item => item.productId));
+    setCartIdList(cartlist?.map(item => item.productId));
+  }, [cartList, cartlist]);
 
   // let handleAddToCart = async (cost, imageLink, productId) => {
   //   try {
@@ -91,7 +87,7 @@ const FeaturedProducts = () => {
           {prodList.length === 0 ? (
             <Spinner />
           ) : (
-            prodList.map((product, index) => {
+            prodList?.map((product, index) => {
               let {
                 productId,
                 title,
@@ -152,22 +148,22 @@ const FeaturedProducts = () => {
                         onClick={e => {
                           e.stopPropagation();
                           // handleAddToCart(price, thumbnailURL, productId);
-                          if (cartIdList.includes(productId)==false) {
+                          if (cartIdList?.includes(productId) == false) {
                             dispatch(addToCart(cartData));
                             setTimeout(() => {
                               dispatch(getCart(userId));
-                            }, 300)
+                            }, 300);
                           }
                         }}
                       >
-                        {cartIdList.includes(productId)
+                        {cartIdList?.includes(productId)
                           ? "added"
                           : "add to cart"}
                       </Button>
                       <FavoriteIcon
                         onClick={e => {
                           e.stopPropagation();
-                          if (productIdList.includes(productId)) {
+                          if (productIdList?.includes(productId)) {
                             dispatch(
                               deleteFromWishlist({
                                 userId,
@@ -179,7 +175,7 @@ const FeaturedProducts = () => {
                           dispatch(addToWishlist(data));
                         }}
                         style={{
-                          fill: productIdList.includes(productId)
+                          fill: productIdList?.includes(productId)
                             ? "red"
                             : "#c0bfbf",
                         }}

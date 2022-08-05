@@ -18,6 +18,7 @@
 .wishlist article h1 {
   font-size: 2rem;
   text-align: left;
+  margin-bottom: 30px;
 }
 .listContainer {
   width: 100%;

@@ -80,8 +80,11 @@ const Signup = () => {
   const [payload, setPayload] = useState({});
   const [btnCondition, setBtnCondition] = useState(false);
   const [model, setModel] = useState(false);
-  const [number1, setNumber1] = useState();
+  const [number1, setNumber1] = useState("");
 
+  const onAgreeTC = tcAccepted => {
+    setBtnCondition(tcAccepted);
+  };
   // const navigate = useNavigate()
 
   const handleSubmit = async e => {
@@ -134,7 +137,7 @@ const Signup = () => {
               navigate("/");
             }}
           >
-            Find it here{" "}
+            Sign In
           </a>
         </section>
         <form onSubmit={handleSubmit}>
@@ -291,7 +294,6 @@ const Signup = () => {
             className={clsx(style.formCardContainer, style.Checkbox)}
             elevation={0}
             style={{ backgroundColor: "transparent" }}
-            onc
           >
             <span
               style={{ marginLeft: "300px", display: "flex", width: "350px" }}
@@ -334,6 +336,7 @@ const Signup = () => {
               <TermsConditions
                 modelCondition={setModel}
                 condition={setBtnCondition}
+                onAgreeTC={onAgreeTC}
               />
             )}
           </Card>
@@ -343,7 +346,13 @@ const Signup = () => {
             style={{ backgroundColor: "transparent" }}
             className={style.formCardContainer}
           >
-            <button className={style.bn5}>Register</button>
+            {btnCondition ? (
+              <button className={style.bn5}>Register</button>
+            ) : (
+              <button className={style.bn5Disabled} disabled={true}>
+                Register
+              </button>
+            )}
           </Card>
         </form>
         <BackdropSpinner open={showBackdrop} />
