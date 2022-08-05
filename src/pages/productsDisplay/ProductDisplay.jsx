@@ -20,9 +20,7 @@ import StarRatings from "../../components/starRating/StarRatings";
 import CalculateOffer from "../../components/Offer Helper Components/CalculateOffer";
 import { Box, Grid } from "@mui/material";
 import { AiOutlineDown } from "react-icons/ai";
-
 import ReactImageZoom from "react-image-zoom";
-
 
 const useStyles = makeStyles(theme => ({
   heading: {
