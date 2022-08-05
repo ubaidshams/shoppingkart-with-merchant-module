@@ -1,13 +1,9 @@
-* {
-  padding: 0;
-  margin: 0;
-  box-sizing: border-box;
-}
-
 img {
   object-fit: scale-down;
 }
-
+.prdouctPage {
+  min-height: 80vh;
+}
 .headingCard {
   display: flex;
   align-items: center;
@@ -38,7 +34,7 @@ img {
   width: 90%;
   /* background-color: aqua; */
   display: flex;
-  align-items: center;
+  /* align-items: center; */
   justify-content: center;
   height: fit-content;
   margin: 0 auto;
@@ -46,7 +42,7 @@ img {
 }
 .infoCard {
   width: 550px;
-  height: 60vh;
+  /* height: 60vh; */
   /* float: right; */
   /* position: absolute; */
   /* background-color: black; */
@@ -56,7 +52,7 @@ img {
 }
 
 .imageCard {
-  width: 500px;
+  /* width: 500px; */
   /* position: absolute; */
   /* background-color: rgba(255, 0, 0, 0.313); */
   margin-top: 60px;

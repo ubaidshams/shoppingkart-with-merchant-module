@@ -21,6 +21,9 @@ import CalculateOffer from "../../components/Offer Helper Components/CalculateOf
 import { Box, Grid } from "@mui/material";
 import { AiOutlineDown } from "react-icons/ai";
 
+import ReactImageZoom from "react-image-zoom";
+
+
 const useStyles = makeStyles(theme => ({
   heading: {
     fontSize: theme.typography.pxToRem(15),
@@ -106,7 +109,7 @@ const ProductDisplay = () => {
   }, [id]);
 
   return (
-    <div>
+    <div className={style.prdouctPage}>
       {/* title card */}
       <Card elevation={3} className={style.headingCard}>
         <section className={style.sectionCard}>
@@ -133,9 +136,20 @@ const ProductDisplay = () => {
             >
               {currentProduct.productImageURLs &&
                 currentProduct.productImageURLs.map(e => {
+                  let props = {
+                    img: e,
+                    zoomWidth: 500,
+                    zoomPosition: "right",
+                    offset: {
+                      vertical: 0,
+                      horizontal: 20,
+                    },
+                    zoomLensStyle: "opacity: 0.7; background-color: green",
+                  };
                   return (
-                    <div>
+                    <div key={e}>
                       <img src={e} alt={currentProduct.title} />
+                      {/* <ReactImageZoom {...props} /> */}
                     </div>
                   );
                 })}
@@ -154,12 +168,25 @@ const ProductDisplay = () => {
             {currentProduct.brand}
             <sup className={style.supScript}>new</sup>
           </h1>
-          <section className={style.offerDetailsContainer}>
+          <Accordion className={style.accordion}>
+            <AccordionSummary
+              expandIcon={<ExpandMoreIcon />}
+              aria-controls="panel1bh-content"
+              id="panel1bh-header"
+            >
+              <Typography className={classes.heading}>
+                Product description
+              </Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+              <Typography>{currentProduct.description}</Typography>
+            </AccordionDetails>
+          </Accordion>
+          {/* <section className={style.offerDetailsContainer}>
             <span className={style.offerDetails}>
-              {/* if possible add the "offer" details in json, it might help, for temporary purpose I'm using hard coding data */}
-              {/* {currentProduct.offer}% OFF */}
+              
             </span>
-          </section>
+          </section> */}
 
           <Accordion className={style.starAccordion}>
             <AccordionSummary
@@ -167,14 +194,18 @@ const ProductDisplay = () => {
               aria-controls="panelstar-content"
               id="panelstar-header"
             >
-              <Typography class={style.starHeading}>
+
+              <div className={style.starHeading}>
                 <StarRatings rating={currentProduct.rating} />
-              </Typography>
+              </div>
+
             </AccordionSummary>
             <AccordionDetails>
               <div className={style.ratingsContainer}>
                 <div className={style.productRatings}>
-                  <label for="file">
+
+                  <label>
+
                     <h3>5 Star:</h3>
                   </label>
                   <progress
@@ -191,7 +222,9 @@ const ProductDisplay = () => {
                 </div>
 
                 <div className={style.productRatings}>
-                  <label for="file">
+
+                  <label>
+
                     <h3>4 Star:</h3>
                   </label>
                   <progress
@@ -208,7 +241,9 @@ const ProductDisplay = () => {
                 </div>
 
                 <div className={style.productRatings}>
-                  <label for="file">
+
+                  <label>
+
                     <h3>3 Star:</h3>
                   </label>
                   <progress
@@ -225,7 +260,9 @@ const ProductDisplay = () => {
                 </div>
 
                 <div className={style.productRatings}>
-                  <label for="file">
+
+                  <label>
+
                     <h3>2 Star:</h3>
                   </label>
                   <progress
@@ -242,7 +279,9 @@ const ProductDisplay = () => {
                 </div>
 
                 <div className={style.productRatings}>
-                  <label for="file">
+
+                  <label>
+
                     <h3>1 Star:</h3>
                   </label>
                   <progress
@@ -281,7 +320,7 @@ const ProductDisplay = () => {
             <sup className={style.supScriptPriceTag}>new</sup> */}
             <CalculateOffer
               originPrice={currentProduct.price}
-              offerPercentage={offer}
+              offerPercentage={currentProduct.offer}
             />
           </span>
           <section className={style.btnContainer}>
@@ -315,20 +354,7 @@ const ProductDisplay = () => {
                 : "add to cart"}
             </button>
           </section>
-          <Accordion className={style.accordion}>
-            <AccordionSummary
-              expandIcon={<ExpandMoreIcon />}
-              aria-controls="panel1bh-content"
-              id="panel1bh-header"
-            >
-              <Typography className={classes.heading}>
-                Product description
-              </Typography>
-            </AccordionSummary>
-            <AccordionDetails>
-              <Typography>{currentProduct.description}</Typography>
-            </AccordionDetails>
-          </Accordion>
+
           <Box>
             Reviews
             <Grid></Grid>

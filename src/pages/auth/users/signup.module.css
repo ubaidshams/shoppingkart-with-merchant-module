@@ -24,9 +24,9 @@
   text-decoration: none;
   cursor: pointer;
 }
-.formCard section a::after {
+/* .formCard section a::after {
   content: ">>";
-}
+} */
 
 .formCard section a:hover {
   text-decoration: underline;

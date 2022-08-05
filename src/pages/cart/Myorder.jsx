@@ -7,12 +7,12 @@ import AccordionDetails from "@mui/material/AccordionDetails";
 import Typography from "@mui/material/Typography";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
-import { Card, CardHeader } from "@material-ui/core";
+import { Card } from "@material-ui/core";
 
 import { useState, useEffect } from "react";
-import StarRatings from "../../components/starRating/StarRatings";
-import { IconButton } from "@mui/material";
-import { Link, useNavigate } from "react-router-dom";
+
+
+import { useNavigate } from "react-router-dom";
 import { getOrderHistory } from "./../../features/orders/orderSlice";
 import CalculateOffer from "../../components/Offer Helper Components/CalculateOffer";
 import Axios from "../../apis/Axios";
@@ -62,7 +62,11 @@ const MyOrder = () => {
   return (
     <div className={styles.orderListContainer} style={{ margin: "1rem auto" }}>
       <h1>My Orders ({orderList?.length || 0})</h1>
-      {orderList === null ? (
+
+      {orderList === null || orderList?.length === 0 ? (
+
+      
+
         <div className={styles.emptyCart}>
           <img
             src="https://rukminim1.flixcart.com/www/800/800/promos/16/05/2019/d438a32e-765a-4d8b-b4a6-520b560971e8.png?q=90"

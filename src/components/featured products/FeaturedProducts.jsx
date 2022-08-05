@@ -3,14 +3,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchProducts } from "../../features/products/productSlice";
 import Spinner from "./../spinner/Spinner";
 import styles from "./featuredProducts.module.css";
-import {
-  addToCart,
-  getCart,
-  deleteFromCart,
-} from "../../features/cart/cartSlice";
+import { addToCart, getCart } from "../../features/cart/cartSlice";
 import { useNavigate } from "react-router-dom";
 import PaginationComp from "../pagination/PaginationComp";
-import { AiOutlineHeart } from "react-icons/ai";
+
 import {
   addToWishlist,
   deleteFromWishlist,
