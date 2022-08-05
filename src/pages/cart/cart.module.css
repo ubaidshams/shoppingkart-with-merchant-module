@@ -223,6 +223,7 @@
   flex-flow: column wrap;
   padding: 0 20px;
   margin: auto;
+  gap: 20px;
 }
 .cancelOrder {
   width: 10%;

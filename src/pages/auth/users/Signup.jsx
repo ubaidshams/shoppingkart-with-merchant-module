@@ -179,7 +179,7 @@ const Signup = () => {
               navigate("/");
             }}
           >
-            Find it here{" "}
+            Sign In
           </a>
         </section>
         <form onSubmit={handleSubmit}>

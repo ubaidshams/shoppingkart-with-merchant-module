@@ -1,6 +1,9 @@
-import React,{useEffect,useState} from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { deleteFromWishlist,getAllWishlist } from "../../features/wishlist/wishlistSlice";
+import {
+  deleteFromWishlist,
+  getAllWishlist,
+} from "../../features/wishlist/wishlistSlice";
 import styles from "./wishlist.module.css";
 import { AiOutlineDelete } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
@@ -12,36 +15,30 @@ import { addToCart } from "../../features/cart/cartSlice";
 const Wishlist = () => {
   // let [wl,setWl] = useState([])
   let navigate = useNavigate();
-  let {userId} = useSelector((state) => state.user.currentUser);
+  let { userId } = useSelector(state => state.user.currentUser);
 
   let productlist = useSelector(state => state.product.productList);
-  
+
   const dispatch = useDispatch();
-  useEffect(()=>{
-    dispatch(getAllWishlist({userId}))
-  },[])
+  useEffect(() => {
+    dispatch(getAllWishlist({ userId }));
+  }, []);
   let wishlist = useSelector(state => state.wishlist.wishList);
   let cartItems = useSelector(state => state.cart.cartItems);
-
 
   return (
     <section className={styles.wishlist}>
       <article>
         <h1>My Wishlist ({wishlist.length})</h1>
-        {
-        wishlist.length === 0 ? (
+        {wishlist.length === 0 ? (
           <h1>Your wish list is empty please go back and add some products</h1>
         ) : (
           <div className={styles.listContainer}>
             {wishlist.map((product, index) => {
-              let {
-                productId,
-                quantity,
-                imageLink
-              } = product;
+              let { productId, quantity, imageLink } = product;
               let payload = {
                 cost: product.cost,
-                imageLink:product.imageLink,
+                imageLink: product.imageLink,
                 quantity: 1,
                 productId: product.productId,
               };
@@ -49,8 +46,9 @@ const Wishlist = () => {
                 userId,
                 payload,
               };
-              let {title,brand,description,offer,price}=productlist.find(v=>v.productId==productId)
-              let found=cartItems.find(v=>v.productId==product.productId)
+              let { title, brand, description, offer, price } =
+                productlist.find(v => v.productId == productId);
+              let found = cartItems.find(v => v.productId == product.productId);
               return (
                 <div
                   onClick={() => navigate(`/products_page/${productId}`)}
@@ -58,12 +56,7 @@ const Wishlist = () => {
                   key={productId}
                 >
                   <div className={styles.prodImg}>
-                    <img
-                      src={imageLink}
-                      alt={title}
-                      height="200"
-                      width="200"
-                    />
+                    <img src={imageLink} alt={title} height="200" width="200" />
                   </div>
                   <div className={styles.prodDetails}>
                     <h2>
@@ -71,9 +64,9 @@ const Wishlist = () => {
                     </h2>
                     <p>{description}</p>
                     {/* <span style={{ position: "relative", width: "100%" }}> */}
-                      {/* {rating.toFixed(1)} */}
-                      {/* <StarRatings rating={rating} left="1.7" top="0" /> */}
-                      {/* <Chip className={style.chip} label="Best" /> */}
+                    {/* {rating.toFixed(1)} */}
+                    {/* <StarRatings rating={rating} left="1.7" top="0" /> */}
+                    {/* <Chip className={style.chip} label="Best" /> */}
                     {/* </span> */}
                     <CalculateOffer
                       originPrice={price}
@@ -84,18 +77,19 @@ const Wishlist = () => {
                       size="small"
                       onClick={e => {
                         e.stopPropagation();
-                        
-                        if(found==undefined)
-                        dispatch(addToCart(cartData));
+
+                        if (found == undefined) dispatch(addToCart(cartData));
                       }}
                     >
-                      {found?"Added":"Add To Cart"}
+                      {found ? "Added" : "Move To Cart"}
                     </Button>
                   </div>
                   <div
                     onClick={e => {
                       e.stopPropagation();
-                      dispatch(deleteFromWishlist({userId,wishlistId:productId}));
+                      dispatch(
+                        deleteFromWishlist({ userId, wishlistId: productId })
+                      );
                     }}
                     className={styles.deleteIcon}
                   >
