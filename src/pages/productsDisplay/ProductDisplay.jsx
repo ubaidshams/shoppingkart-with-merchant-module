@@ -140,6 +140,12 @@ const ProductDisplay = () => {
                   );
                 })}
             </Carousel>
+            <div className={style.detailDescription}>
+              <summary>
+                <h3>Detailed Description</h3>
+                <h4>{description}</h4>
+              </summary>
+            </div>
           </section>
           <footer className={style.imgCardFooterCard}>
             {currentProduct.price > 1000 && <span>free Delivery</span>}
@@ -334,12 +340,6 @@ const ProductDisplay = () => {
             <Grid></Grid>
           </Box>
         </div>
-      </div>
-      <div className={style.detailDescription}>
-        <summary>
-          <h3>Detailed Description</h3>
-          <h4>{description}</h4>
-        </summary>
       </div>
     </div>
   );

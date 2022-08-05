@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Card, TextField, makeStyles, Checkbox } from "@material-ui/core";
 import Radio from "@material-ui/core/Radio";
@@ -8,6 +8,7 @@ import FormLabel from "@material-ui/core/FormLabel";
 import style from "./signup.module.css";
 import { motion } from "framer-motion";
 import Axios from "../../../apis/Axios";
+import { useForm } from "react-hook-form";
 import MenuItem from "@material-ui/core/MenuItem";
 import Select from "@material-ui/core/Select";
 import "animate.css";
@@ -21,6 +22,12 @@ import { useDispatch } from "react-redux";
 import { OpenLogin } from "../../../features/Login/LoginSlice";
 import BackdropSpinner from "../../../components/spinner/BackdropSpinner";
 // import { motion, Variants } from "framer-motion";
+import {
+  emailRegex,
+  phoneRegex,
+  firstNameRegex,
+  lastNameRegex,
+} from "../../../validation/Regex";
 
 const useStyles = makeStyles(theme => ({
   margin: {
@@ -74,13 +81,47 @@ const Signup = () => {
   const [fname, setFname] = useState("");
   const [lname, setLname] = useState("");
   const [email, setEmail] = useState("");
+  let [error, setError] = useState(false);
+
   const [password, setPassword] = useState("nopassword");
   const [role, setRole] = useState("");
   const [gender, setGender] = useState("male");
   const [payload, setPayload] = useState({});
   const [btnCondition, setBtnCondition] = useState(false);
   const [model, setModel] = useState(false);
-  const [number1, setNumber1] = useState("");
+  const [phone, setPhone] = useState("");
+
+  const [message, setMessage] = useState("");
+
+  useEffect(() => {
+    if (
+      emailRegex.test(email) &&
+      phoneRegex.test(phone) &&
+      firstNameRegex.test(fname) &&
+      lastNameRegex.test(lname)
+    )
+      setError(false);
+    else setError(true);
+  }, [email, phone, fname, lname]);
+
+  // const emailValidation = () => {
+  //   const regEx = /[a-zA-Z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,8}(.[a-z{2,8}])?/g;
+  //   console.log(regEx.test(email));
+  //   if (regEx.test(email)) {
+  //     setMessage("Valid Email");
+  //   } else {
+  //     setMessage("invalid email");
+  //   }
+  // };
+
+  // const phoneValidation = () => {
+  //   const regEx = /^([+]?[\s0-9]+)?(\d{3}|[(]?[0-9]+[)])?([-]?[\s]?[0-9])+$/i;
+  //   if (regEx.test(phone)) {
+  //     setMessage("Valid phone");
+  //   } else {
+  //     setMessage("invalid phone");
+  //   }
+  // };
 
   const onAgreeTC = tcAccepted => {
     setBtnCondition(tcAccepted);
@@ -96,7 +137,7 @@ const Signup = () => {
       email,
       password,
       gender,
-      phone: number1,
+      phone,
       role: ["CUSTOMER"],
       addressList: [],
       wishList: [],
@@ -117,14 +158,15 @@ const Signup = () => {
     try {
       await Axios.post("/customers", currPayload, { headers: header });
       console.log("user registered....");
-    } catch (error) {
-      toast.error(error.message);
-      console.log(error.message);
+    } catch (err) {
+      toast.error(err.message);
+      console.log(err.message);
     }
   };
 
   return (
     <>
+      {message}
       <br />
       <motion.div className={clsx(style.formCard)}>
         <h1>Create Your Profile</h1>
@@ -157,6 +199,16 @@ const Signup = () => {
               onChange={e => {
                 setFname(e.target.value);
               }}
+              error={fname != "" && firstNameRegex.test(fname) === false}
+              helperText={
+                fname != "" && /^[a-zA-Z_. ]+$/g.test(fname) === false
+                  ? "must be alphabets"
+                  : (fname != "" && fname.length < 3) || fname.length > 20
+                  ? "char should be between 3-20"
+                  : fname != "" && firstNameRegex.test(fname) === false
+                  ? "invalid first name"
+                  : ""
+              }
             ></TextField>
             <TextField
               className={classes.formTextFieldName}
@@ -169,6 +221,16 @@ const Signup = () => {
               onChange={e => {
                 setLname(e.target.value);
               }}
+              error={lname != "" && lastNameRegex.test(lname) === false}
+              helperText={
+                lname != "" && /^[a-zA-Z_. ]+$/g.test(lname) === false
+                  ? "must be alphabets"
+                  : (lname != "" && lname.length < 3) || lname.length > 20
+                  ? "char should be between 3-20"
+                  : lname != "" && firstNameRegex.test(lname) === false
+                  ? "invalid last name"
+                  : ""
+              }
             ></TextField>
           </Card>
           <Card
@@ -212,7 +274,7 @@ const Signup = () => {
               </section>
             </RadioGroup>
           </Card>
-          {/* phone number1 mandatory */}
+          {/* phone phone mandatory */}
           <Card
             elevation={0}
             style={{ backgroundColor: "transparent" }}
@@ -226,8 +288,18 @@ const Signup = () => {
               placeholder="9856412537"
               id="outlined-size-small"
               variant="outlined"
-              value={number1}
-              onChange={e => setNumber1(e.target.value)}
+              value={phone}
+              onChange={e => setPhone(e.target.value)}
+              error={phone != "" && phoneRegex.test(phone) === false}
+              helperText={
+                phone != "" &&
+                isNaN(Number(phone)) == false &&
+                phone.length != 10
+                  ? "must be 10 digit"
+                  : phone != "" && phoneRegex.test(phone) === false
+                  ? "must be numberic only"
+                  : ""
+              }
             ></TextField>
           </Card>
           {/* number2 optional */}
@@ -245,12 +317,18 @@ const Signup = () => {
               label="Email Address"
               id="outlined-size-small email"
               variant="outlined"
-              placeholder="exmaple@company.com"
+              placeholder="example@company.com"
               required
               value={email}
               onChange={e => {
                 setEmail(e.target.value);
               }}
+              error={email != "" && emailRegex.test(email) === false}
+              helperText={
+                email != "" && emailRegex.test(email) === false
+                  ? "invalid email"
+                  : ""
+              }
             ></TextField>
           </Card>
           <Card
@@ -346,7 +424,7 @@ const Signup = () => {
             style={{ backgroundColor: "transparent" }}
             className={style.formCardContainer}
           >
-            {btnCondition ? (
+            {btnCondition && !error ? (
               <button className={style.bn5}>Register</button>
             ) : (
               <button className={style.bn5Disabled} disabled={true}>
