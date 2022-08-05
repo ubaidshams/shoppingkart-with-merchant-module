@@ -192,14 +192,18 @@ const ProductDisplay = () => {
               aria-controls="panelstar-content"
               id="panelstar-header"
             >
+
               <div className={style.starHeading}>
                 <StarRatings rating={currentProduct.rating} />
               </div>
+
             </AccordionSummary>
             <AccordionDetails>
               <div className={style.ratingsContainer}>
                 <div className={style.productRatings}>
+
                   <label>
+
                     <h3>5 Star:</h3>
                   </label>
                   <progress
@@ -216,7 +220,9 @@ const ProductDisplay = () => {
                 </div>
 
                 <div className={style.productRatings}>
+
                   <label>
+
                     <h3>4 Star:</h3>
                   </label>
                   <progress
@@ -233,7 +239,9 @@ const ProductDisplay = () => {
                 </div>
 
                 <div className={style.productRatings}>
+
                   <label>
+
                     <h3>3 Star:</h3>
                   </label>
                   <progress
@@ -250,7 +258,9 @@ const ProductDisplay = () => {
                 </div>
 
                 <div className={style.productRatings}>
+
                   <label>
+
                     <h3>2 Star:</h3>
                   </label>
                   <progress
@@ -267,7 +277,9 @@ const ProductDisplay = () => {
                 </div>
 
                 <div className={style.productRatings}>
+
                   <label>
+
                     <h3>1 Star:</h3>
                   </label>
                   <progress
