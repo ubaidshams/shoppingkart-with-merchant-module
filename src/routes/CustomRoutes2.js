@@ -20,7 +20,6 @@ import Welcome from "../components/welcomepage/Welcome";
 
 
 // !--------------- MERCHANT MOUDULE IMPORTS------------ //
-// import MerchantSignup from "../MERCHANT_MODULE/pages/auth/Signup"
 import MerchantSignup from "../MERCHANT_MODULE/pages/auth/MerchantSignup";
 
 // !--------------- MERCHANT MOUDULE IMPORTS------------ //

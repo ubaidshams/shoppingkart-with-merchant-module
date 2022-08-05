@@ -191,10 +191,10 @@ const BasicForm = () => {
 };
 const CompanyDeltails = () => {
   const {
-    control,
+    control,setValue,
     formState: { errors },
   } = useFormContext();
-
+  const [otherCompanyType , setOtherCompanyType]=useState("")
   let companytypeList = ["Beauty", "Pharmacy", "Grooming", "Clothing","Electronic", "Hardware", "Furniture", "Appliances", "Books","Toys", "Other"];
 
   return (
@@ -408,27 +408,66 @@ const CompanyDeltails = () => {
       <Controller
         name="type"
         control={control}
-        render={({ field }) => (
-          <TextField
-            select
-            fullWidth
-            required
-            variant="outlined"
-            placeholder="Enter Your Company Type"
-            label="Company Type"
-            margin="normal"
-            {...field}
-          >
-            {companytypeList.map((cType, i) => {
-              return (
-                <MenuItem value={`${cType}`} key={`${i}`}>
-                  {`${cType}`}
-                </MenuItem>
-              );
-            })}
-          </TextField>
+        render={() => (
+        <>
+            <TextField
+              select
+              fullWidth
+              required
+              variant="outlined"
+              placeholder="Enter Your Company Type"
+              label="Company Type"
+              margin="normal"
+              defaultValue={""}
+              onChange={(e)=>{
+                setValue("type", e.target.value, {shouldDirty:true})
+                setOtherCompanyType(e.target.value)
+              }}
+            
+            >
+              {companytypeList.map((cType, i) => {
+                return (
+                  <MenuItem value={`${cType}`} key={`${i}`}>
+                    {`${cType}`}
+                  </MenuItem>
+                );
+              })}
+            </TextField>
+        </>
         )}
       />
+
+      {/* BEGNIN :: Other Company type */}
+      <div style={{ display: "flex", justifyContent: "center " }}>
+      
+        {otherCompanyType == "Other" && (
+
+            <Controller
+                name="companyOthertype"
+                control={control}
+                render={({ field }) => (
+                  <>
+                    <TextField
+                      fullWidth 
+                      required
+                      margin="normal"
+                      {...field}
+                      id="outlined-size-small"
+                      label="Company type"
+                      placeholder="Enter Company type"
+                      variant="outlined"
+                    ></TextField>
+                  </>
+                  )}
+            />
+
+          
+        )}
+    </div>
+
+      {/* END :: other company type */}
+
+
     </>
   );
 };
@@ -439,7 +478,7 @@ const CompanyAddress = () => {
     setValue
   } = useFormContext();
 
-  // tems and Conditon model
+  // terms and Conditon model
   const [model , setModel]=useState(false)
   const [btnCondition , setBtnCondition]= useState(false)
   // STATE COUNTRY API
@@ -456,13 +495,11 @@ const CompanyAddress = () => {
   }, []);
 
   function enableStateDropDown(countryCode1) {
-    console.log(countryCode1)
     let allStatesData = State.getStatesOfCountry(`${countryCode1}`);
     setAllStates(allStatesData);
   }
 
   function enableCityDropDown(stateCode1) {
-    console.log(stateCode1)
     let allCityData = City.getCitiesOfState(countryCode, stateCode1);
     setAllcity(allCityData);
   }
@@ -586,6 +623,7 @@ const CompanyAddress = () => {
                 <TextField
                   select
                   fullWidth
+                  defaultValue={""}
                   variant="outlined"
                   placeholder="Enter Your Country Name"
                   label="Select country"
@@ -628,6 +666,7 @@ const CompanyAddress = () => {
                   label="Select State"
                   variant="outlined"
                   margin="normal"
+                  defaultValue={""}
                   required 
                   onChange={(e)=>{
                     setValue("state", e.target.value , {shouldDirty:true})
@@ -685,7 +724,6 @@ const CompanyAddress = () => {
         
       {/* BEGIN :: Terms and Condition Modal */}
       <Card
-            className={""}
             elevation={0}
             style={{ backgroundColor: "transparent" }}
   
@@ -765,7 +803,6 @@ function getStepContent(step) {
 const MerchantSignup2 = () => {
   const classes = useStyles();
   const methods = useForm({
-    
     defaultValues: {
       firstName: "",
       lastName: "",
@@ -787,6 +824,7 @@ const MerchantSignup2 = () => {
       state: "",
       city: "",
       type: "",
+      companyOthertype:"",
       pincode: "",
       streetInfo: "",
       termAndCondition:false
@@ -797,7 +835,18 @@ const MerchantSignup2 = () => {
   const [showBackdrop, setShowBackdrop] = useState(false);
 
   const handleNext = async (data) => {
-    console.log(data);
+    // console.log(data);
+    let type1 =data.type    // Other verification
+    let type2 = data.companyOthertype // if other then use this as  companType
+    let customCompanyType ;
+    // ? checking company type setting value in customCompanyType
+
+    if(type1 === "Other" && type2 !== ""){
+      customCompanyType = type2
+    }else if(type1 !== "Other" ){
+      customCompanyType = type1
+    }
+
     let payload = {
       firstName: data.firstName,
       lastName: data.lastName,
@@ -819,7 +868,7 @@ const MerchantSignup2 = () => {
           country: data.country,
           state: data.state,
           city: data.city,
-          type: data.type,
+          type: customCompanyType,
           pincode: data.pincode,
           streetInfo: data.streetInfo,
         },
@@ -833,11 +882,11 @@ const MerchantSignup2 = () => {
         toast.success(
           `Hey ${data.data.firstName} your Merchant ID is ${data.message}`
         );
-        console.log("Merchant registerd");
+        // console.log("Merchant registerd");
         setShowBackdrop(false);
         setActiveStep(activeStep + 1);
       } catch (error) {
-        console.log(error);
+        // console.log(error);
         let errMessage = error.response.data.data
         toast.error(errMessage);
         setShowBackdrop(false);
