@@ -18,10 +18,9 @@ import Order from "../pages/profile/Order";
 
 import Welcome from "../components/welcomepage/Welcome";
 
-
 // !--------------- MERCHANT MOUDULE IMPORTS------------ //
-import MerchantSignup from "../MERCHANT_MODULE/pages/auth/Signup"
-import Home from '../MERCHANT_MODULE/home/Home';
+import MerchantSignup from "../MERCHANT_MODULE/pages/auth/Signup";
+import Home from "../MERCHANT_MODULE/home/Home";
 
 // !--------------- MERCHANT MOUDULE IMPORTS------------ //
 
@@ -44,10 +43,10 @@ const CustomRoutes2 = () => {
       path: "merchant-signup",
       element: <MerchantSignup />,
     },
-    {
-      path: "merchant/home",
-      element: <Home/>,
-    },
+    // {
+    //   path: "merchant/home",
+    //   element: <Home/>,
+    // },
   ]);
   return myRoutes;
 };

@@ -13,6 +13,7 @@ import { useSelector, useDispatch } from "react-redux";
 
 import CustomRoutes2 from "./routes/CustomRoutes2";
 import { fetchProducts } from "./features/products/productSlice";
+import MerchantRoute from "./routes/MerchantRoute";
 
 const App = () => {
   let dispatch = useDispatch();
@@ -30,7 +31,7 @@ const App = () => {
           <Navbar />
 
           <CustomRoutes2 />
-
+          <MerchantRoute />
           <CustomRoutes />
         </PersistentLogin>
         <Footer />
