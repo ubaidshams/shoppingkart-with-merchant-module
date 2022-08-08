@@ -17,24 +17,22 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import InboxIcon from "@mui/icons-material/MoveToInbox";
-import MailIcon from "@mui/icons-material/Mail";
 import Menu from "./Menu";
 import { Button } from "@mui/material";
 import styles from "./home.module.css";
-import { AddIcCallOutlined, PlusOne } from "@material-ui/icons";
+import { PlusOne } from "@material-ui/icons";
 import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-// import { Typography } from '@mui/joy/Typography';
 import { makeStyles } from "@material-ui/core/styles";
+import { Link, Outlet } from "react-router-dom";
 const drawerWidth = 240;
 
 const Main = styled("main", { shouldForwardProp: prop => prop !== "open" })(
   ({ theme, open }) => ({
     flexGrow: 1,
-    padding: theme.spacing(3),
+    padding: theme.spacing(1),
     transition: theme.transitions.create("margin", {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
@@ -123,15 +121,6 @@ export default function PersistentDrawerLeft() {
           <Menu />
           <Button color="inherit">Login</Button>
         </Toolbar>
-
-        {/* <MenuIcon />
-          </IconButton>
-          <Typography variant="h6" noWrap component="div" sx={{ flexGrow: 1 }}>
-            Merchant Home
-          </Typography>
-          <Menu />
-          <Auth />
-        </Toolbar> */}
       </AppBar>
       <Drawer
         sx={{
@@ -140,6 +129,7 @@ export default function PersistentDrawerLeft() {
           "& .MuiDrawer-paper": {
             width: drawerWidth,
             boxSizing: "border-box",
+            background: "#172337",
           },
         }}
         variant="persistent"
@@ -148,7 +138,6 @@ export default function PersistentDrawerLeft() {
       >
         <DrawerHeader
           sx={{
-            backgroundColor: "#172337",
             display: "flex",
             justifyContent: "space-between",
             alignItems: "center",
@@ -165,15 +154,26 @@ export default function PersistentDrawerLeft() {
             )}
           </IconButton>
         </DrawerHeader>
-        <List sx={{ padding: 0, backgroundColor: "#172337" }}>
+        <Divider sx={{ width: "100%" }} />
+        <List sx={{ padding: 0 }}>
           {[
-            { head: "products", sub: ["Add product", "View all product"] },
+            {
+              head: "products",
+              sub: [
+                { name: "Add product", path: "/merchant/home/add-product" },
+                {
+                  name: "View all product",
+                  path: "/merchant/home/view-products",
+                },
+              ],
+            },
             {
               head: "account",
               sub: ["edit profile", "view profile", "logout"],
             },
           ].map((item, index) => (
             <Accordion
+              key={index}
               disableGutters
               elevation={0}
               sx={{
@@ -185,26 +185,32 @@ export default function PersistentDrawerLeft() {
               <AccordionSummary
                 aria-controls="panel1a-content"
                 id="panel1a-header"
-                sx={{ backgroundColor: "#D0D3D4" }}
+                sx={{ backgroundColor: "#172337", color: "white" }}
               >
                 <ListItem key={item.head} disablePadding>
                   <ListItemButton sx={{ padding: 0 }}>
-                    <ListItemIcon>
+                    <ListItemIcon sx={{ color: "white" }}>
                       {index % 2 === 0 ? <InboxIcon /> : <PlusOne />}
                     </ListItemIcon>
                     <ListItemText primary={item.head} />
                   </ListItemButton>
                 </ListItem>
               </AccordionSummary>
-              <AccordionDetails>
+              <AccordionDetails sx={{ background: "#172337", color: "white" }}>
                 {item.sub.map((value, index) => (
-                  <ListItem key={value} disablePadding>
-                    <ListItemButton>
-                      <ListItemIcon>
-                        {index % 2 === 0 ? <InboxIcon /> : <PlusOne />}
-                      </ListItemIcon>
-                      <ListItemText primary={value} />
-                    </ListItemButton>
+                  <ListItem key={index} disablePadding>
+                    <Link
+                      to={`${value.path}`}
+                      style={{
+                        color: "inherit",
+                        textDecoration: "inherit",
+                        paddingLeft: "18%",
+                      }}
+                    >
+                      <ListItemButton>
+                        <ListItemText primary={value.name} />
+                      </ListItemButton>
+                    </Link>
                   </ListItem>
                 ))}
               </AccordionDetails>
@@ -213,8 +219,8 @@ export default function PersistentDrawerLeft() {
         </List>
       </Drawer>
       <Main open={open}>
-        <DrawerHeader />
-        <Typography paragraph>
+        {/* <DrawerHeader /> */}
+        {/* <Typography paragraph>
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
           eiusmod tempor incididunt ut labore et dolore magna aliqua. Rhoncus
           dolor purus non enim praesent elementum facilisis leo vel. Risus at
@@ -242,7 +248,8 @@ export default function PersistentDrawerLeft() {
           sollicitudin nibh sit. Ornare aenean euismod elementum nisi quis
           eleifend. Commodo viverra maecenas accumsan lacus vel facilisis. Nulla
           posuere sollicitudin aliquam ultrices sagittis orci a.
-        </Typography>
+        </Typography> */}
+        {<Outlet />}
       </Main>
     </Box>
   );
