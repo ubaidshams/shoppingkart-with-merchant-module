@@ -34,7 +34,8 @@ const App = () => {
           <MerchantRoute />
           <CustomRoutes />
         </PersistentLogin>
-        <Footer />
+        {/* {Object.keys(currentUser).length !== 0 && <Footer />} */}
+        <Footer/>
       </Router>
     </div>
   );
