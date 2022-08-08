@@ -19,10 +19,7 @@ import Order from "../pages/profile/Order";
 import Welcome from "../components/welcomepage/Welcome";
 
 // !--------------- MERCHANT MOUDULE IMPORTS------------ //
-<<<<<<< HEAD
-
-
-import MerchantSignup from "../MERCHANT_MODULE/pages/auth/MerchantSignup";
+import MerchantSignup from "../MERCHANT_MODULE/pages/auth/Signup"
 import Home from '../MERCHANT_MODULE/home/Home';
 
 >>>>>>> 41a74aa5a199831ee0df6600c73c187bdc70cc47
