@@ -1,14 +1,14 @@
 .formCard {
-    width: 60vw;
-    /* background-color: red; */
-    margin: 20px auto;
-  
-    /* height: 90vh; */
-    padding: 20px;
-    box-shadow: 0 5px 15px gray;
-    border-radius: 20px;
-    /* position: absolute; */
+    width: 90%;
+    margin: 10px auto;
+    min-height: 80vh;
+    padding: 50px ;
+    box-shadow: 0px 2px 2px 2px #cccccc6e;
+    border-radius: 2px;
+    align-items: center;
+    justify-content: center;
   }
+
   .formCard h1 {
     text-align: center;
   }
@@ -17,6 +17,10 @@
     width: 452px;
     /* border:3px solid gray; */
     text-align: center;
+  }
+  .formContainer{
+    width: 75%;
+    margin: 10px auto;
   }
   
   .formCard section a {
@@ -59,7 +63,7 @@
   }
   
   .radioGroup {
-    display: inline-flex;
+    display: flex;
   }
   
   /* btn */

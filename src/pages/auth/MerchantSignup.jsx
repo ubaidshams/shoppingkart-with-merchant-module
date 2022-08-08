@@ -12,6 +12,7 @@ import { useForm } from "react-hook-form";
 import MenuItem from "@material-ui/core/MenuItem";
 import Select from "@material-ui/core/Select";
 import "animate.css";
+import Typography from "@mui/material/Typography";
 import clsx from "clsx";
 import TermsConditions from "../TermsConditions";
 import InputLabel from "@material-ui/core/InputLabel";
@@ -28,7 +29,20 @@ import {
   firstNameRegex,
   lastNameRegex,
 } from "../../../validation/Regex";
-
+import {
+  TextField,
+  Button,
+  Stepper,
+  Step,
+  StepLabel,
+  Box,
+  RadioGroup,
+  FormControlLabel,
+  Radio,
+  Card,
+  Checkbox,
+  MenuItem,
+} from "@material-ui/core";
 const useStyles = makeStyles(theme => ({
   margin: {
     margin: theme.spacing(1),
@@ -71,7 +85,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const Signup = () => {
+const MerchantSignup = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const classes = useStyles();
