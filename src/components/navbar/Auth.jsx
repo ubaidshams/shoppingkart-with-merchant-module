@@ -59,7 +59,7 @@ const Auth = () => {
   let cartCount = useSelector(state => state.cart.cartItems);
 
   useEffect(() => {
-    if (currentUser.userId != undefined) {
+    if (currentUser.userId != undefined && currentUser.role.includes("CUSTOMER")) {
       dispatch(getCart(currentUser.userId));
       dispatch(getOrderHistory(currentUser.userId));
     }
@@ -78,6 +78,8 @@ const Auth = () => {
         }
         // { withCredentials: true }
       );
+
+
       if (data) {
         dispatch(
           createCurrentUser({
@@ -88,9 +90,22 @@ const Auth = () => {
         dispatch(CloseLogin());
         setShowBackdrop(false);
         toast.success("successfully logged in");
-        navigate("/Home");
-        dispatch(getCart(data.data.userId));
-        dispatch(getOrderHistory(data.data.userId));
+
+      
+        // ! routing according to user ROLE
+        if(data.data.role[0] === "CUSTOMER"){
+          navigate("/Home");
+          dispatch(getCart(data.data.userId));
+          dispatch(getOrderHistory(data.data.userId));
+        }else 
+        if(data.data.role[0] === "MERCHANT"){
+          navigate("/")
+        }
+
+        // ! routing according to user ROLE
+
+
+
       }
     } catch (err) {
       console.log(err);

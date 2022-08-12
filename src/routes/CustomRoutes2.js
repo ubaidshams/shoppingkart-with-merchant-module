@@ -15,13 +15,17 @@ import Wishlist from "../pages/wishlist/Wishlist";
 import Profile from "./../pages/profile/Profile";
 import Reset from "../pages/auth/users/Reset";
 import Order from "../pages/profile/Order";
-
+import Home from "../pages/home/Home.jsx"
+import PageNotFound  from "../pages/PageNotFound"
 import Welcome from "../components/welcomepage/Welcome";
 
 
+import CustomRoutes from "./CustomRoutes";
 // !--------------- MERCHANT MOUDULE IMPORTS------------ //
 import MerchantSignup from "../MERCHANT_MODULE/pages/auth/MerchantSignup";
-import Home from '../MERCHANT_MODULE/home/Home';
+import Dashboard from '../MERCHANT_MODULE/home/Home';
+import ProtectedRoute from "../helper/ProtectedRoutes";
+import MerchantRoutes from "./MerchantRoutes";
 
 // !--------------- MERCHANT MOUDULE IMPORTS------------ //
 
@@ -45,9 +49,27 @@ const CustomRoutes2 = () => {
       element: <MerchantSignup />,
     },
     {
-      path: "merchant/home",
-      element: <Home/>,
+      path:"/reset",
+      element:<Reset/>
     },
+    
+    {
+      path: "/*",
+      element: (
+        <ProtectedRoute  allowedRole={["MERCHANT"]} >
+          <MerchantRoutes/>
+        </ProtectedRoute>
+      ),
+    },
+    {
+      path:"/*",
+      element :(
+        <ProtectedRoute allowedRole={["CUSTOMER"]}>
+          <CustomRoutes/>
+        </ProtectedRoute>
+      ),
+    }
+
   ]);
   return myRoutes;
 };

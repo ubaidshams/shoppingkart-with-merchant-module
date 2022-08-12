@@ -17,24 +17,23 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import InboxIcon from "@mui/icons-material/MoveToInbox";
-import MailIcon from "@mui/icons-material/Mail";
 import Menu from "./Menu";
 import { Button } from "@mui/material";
 import styles from "./home.module.css";
-import { AddIcCallOutlined, PlusOne } from "@material-ui/icons";
+import { PlusOne } from "@material-ui/icons";
 import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-// import { Typography } from '@mui/joy/Typography';
 import { makeStyles } from "@material-ui/core/styles";
+import { Link, Outlet } from "react-router-dom";
+import Auth from "../../components/navbar/Auth"
 const drawerWidth = 240;
 
 const Main = styled("main", { shouldForwardProp: prop => prop !== "open" })(
   ({ theme, open }) => ({
     flexGrow: 1,
-    padding: theme.spacing(3),
+    padding: theme.spacing(1),
     transition: theme.transitions.create("margin", {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
@@ -122,16 +121,8 @@ export default function PersistentDrawerLeft() {
           </Typography>
           <Menu />
           <Button color="inherit">Login</Button>
-        </Toolbar>
-
-        {/* <MenuIcon />
-          </IconButton>
-          <Typography variant="h6" noWrap component="div" sx={{ flexGrow: 1 }}>
-            Merchant Home
-          </Typography>
-          <Menu />
           <Auth />
-        </Toolbar> */}
+        </Toolbar>
       </AppBar>
       <Drawer
         sx={{
@@ -140,6 +131,7 @@ export default function PersistentDrawerLeft() {
           "& .MuiDrawer-paper": {
             width: drawerWidth,
             boxSizing: "border-box",
+            background: "#172337",
           },
         }}
         variant="persistent"
@@ -148,7 +140,6 @@ export default function PersistentDrawerLeft() {
       >
         <DrawerHeader
           sx={{
-            backgroundColor: "#172337",
             display: "flex",
             justifyContent: "space-between",
             alignItems: "center",
@@ -165,15 +156,27 @@ export default function PersistentDrawerLeft() {
             )}
           </IconButton>
         </DrawerHeader>
-        <List sx={{ padding: 0, backgroundColor: "#172337" }}>
+        <Divider sx={{ width: "100%" }} />
+        {/* BEGIN :: SideBar Navigation links */}
+        <List sx={{ padding: 0 }}>
           {[
-            { head: "products", sub: ["Add product", "View all product"] },
             {
-              head: "account",
+              head: "PRODUCT",
+              sub: [
+                { name: "Add Product", path: "/add-product" },
+                {
+                  name: "View All Product",
+                  path: "/view-products",
+                },
+              ],
+            },
+            {
+              head: "ACCOUNT",
               sub: ["edit profile", "view profile", "logout"],
             },
           ].map((item, index) => (
             <Accordion
+              key={index}
               disableGutters
               elevation={0}
               sx={{
@@ -185,64 +188,44 @@ export default function PersistentDrawerLeft() {
               <AccordionSummary
                 aria-controls="panel1a-content"
                 id="panel1a-header"
-                sx={{ backgroundColor: "#D0D3D4" }}
+                sx={{ backgroundColor: "#172337", color: "white" }}
               >
-                <ListItem key={item.head} disablePadding>
-                  <ListItemButton sx={{ padding: 0 }}>
-                    <ListItemIcon>
+                <ListItem key={item.head} disablePadding >
+                  {/* <ListItemButton sx={{ padding: 0 , background:"red"}}> */}
+                    {/* <ListItemIcon sx={{ color: "white" }}>
                       {index % 2 === 0 ? <InboxIcon /> : <PlusOne />}
-                    </ListItemIcon>
+                    </ListItemIcon> */}
                     <ListItemText primary={item.head} />
-                  </ListItemButton>
+                  {/* </ListItemButton> */}
                 </ListItem>
               </AccordionSummary>
-              <AccordionDetails>
+              <AccordionDetails sx={{ background: "#172337", color: "white" }}>
                 {item.sub.map((value, index) => (
-                  <ListItem key={value} disablePadding>
-                    <ListItemButton>
-                      <ListItemIcon>
-                        {index % 2 === 0 ? <InboxIcon /> : <PlusOne />}
-                      </ListItemIcon>
-                      <ListItemText primary={value} />
-                    </ListItemButton>
+                  <ListItem key={index} disablePadding>
+                    <Link
+                      to={`${value.path}`}
+                      style={{
+                        color: "inherit",
+                        textDecoration: "inherit",
+                        paddingLeft: "18%",
+                      }}
+                    >
+                      
+                        <ListItemText primary={value.name} />
+                      
+                    </Link>
                   </ListItem>
                 ))}
               </AccordionDetails>
             </Accordion>
           ))}
         </List>
+        {/* END :: SideBar Navigation links */}
+
       </Drawer>
-      <Main open={open}>
-        <DrawerHeader />
-        <Typography paragraph>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua. Rhoncus
-          dolor purus non enim praesent elementum facilisis leo vel. Risus at
-          ultrices mi tempus imperdiet. Semper risus in hendrerit gravida rutrum
-          quisque non tellus. Convallis convallis tellus id interdum velit
-          laoreet id donec ultrices. Odio morbi quis commodo odio aenean sed
-          adipiscing. Amet nisl suscipit adipiscing bibendum est ultricies
-          integer quis. Cursus euismod quis viverra nibh cras. Metus vulputate
-          eu scelerisque felis imperdiet proin fermentum leo. Mauris commodo
-          quis imperdiet massa tincidunt. Cras tincidunt lobortis feugiat
-          vivamus at augue. At augue eget arcu dictum varius duis at consectetur
-          lorem. Velit sed ullamcorper morbi tincidunt. Lorem donec massa sapien
-          faucibus et molestie ac.
-        </Typography>
-        <Typography paragraph>
-          Consequat mauris nunc congue nisi vitae suscipit. Fringilla est
-          ullamcorper eget nulla facilisi etiam dignissim diam. Pulvinar
-          elementum integer enim neque volutpat ac tincidunt. Ornare suspendisse
-          sed nisi lacus sed viverra tellus. Purus sit amet volutpat consequat
-          mauris. Elementum eu facilisis sed odio morbi. Euismod lacinia at quis
-          risus sed vulputate odio. Morbi tincidunt ornare massa eget egestas
-          purus viverra accumsan in. In hendrerit gravida rutrum quisque non
-          tellus orci ac. Pellentesque nec nam aliquam sem et tortor. Habitant
-          morbi tristique senectus et. Adipiscing elit duis tristique
-          sollicitudin nibh sit. Ornare aenean euismod elementum nisi quis
-          eleifend. Commodo viverra maecenas accumsan lacus vel facilisis. Nulla
-          posuere sollicitudin aliquam ultrices sagittis orci a.
-        </Typography>
+      <Main open={open} style={{marginTop:"70px"}}>
+        {/* <DrawerHeader /> */}
+        <Outlet />
       </Main>
     </Box>
   );
