@@ -876,9 +876,12 @@ const MerchantSignup2 = () => {
     };
 
     if (activeStep === steps.length - 1) {
+      let header ={
+        verifyUrl: "http://localhost:3000/reset"
+      }
       try {
         setShowBackdrop(true);
-        let { data } = await Axios.post("/merchants", payload);
+        let { data } = await Axios.post("/merchants", payload, { headers: header});
         toast.success(
           `Hey ${data.data.firstName} your Merchant ID is ${data.message}`
         );

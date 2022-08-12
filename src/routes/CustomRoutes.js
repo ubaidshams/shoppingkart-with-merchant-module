@@ -24,6 +24,7 @@ import ProfileInfo from "../pages/profile/ProfileInfo";
 import MyAddresses from "../pages/profile/MyAddresses";
 import EditAddress from "../pages/profile/EditAddress";
 import PlaceOrder from "../pages/cart/ProductCheckout/PlaceOrder";
+import PageNotFound from "../pages/PageNotFound"
 const CustomRoutes = () => {
   let myRoutes = useRoutes([
     {
@@ -113,6 +114,10 @@ const CustomRoutes = () => {
       path: "/place-order",
       element: <PlaceOrder />,
     },
+    {
+      path:"*",
+      element:<PageNotFound/>
+    }
   ]);
   return myRoutes;
 };
