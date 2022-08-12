@@ -42,10 +42,10 @@ const CustomRoutes2 = () => {
       path: "merchant-signup",
       element: <MerchantSignup />,
     },
-    // {
-    //   path: "merchant/home",
-    //   element: <Home/>,
-    // },
+    {
+      path: "merchant/home",
+      element: <Home/>,
+    },
   ]);
   return myRoutes;
 };
