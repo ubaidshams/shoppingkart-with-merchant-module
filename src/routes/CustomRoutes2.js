@@ -19,7 +19,6 @@ import Home from "../pages/home/Home.jsx"
 import PageNotFound  from "../pages/PageNotFound"
 import Welcome from "../components/welcomepage/Welcome";
 
-=======
 import MerchantSignup from "../MERCHANT_MODULE/pages/auth/MerchantSignup";
 import Dashboard from '../MERCHANT_MODULE/home/Home';
 import ProtectedRoute from "../helper/ProtectedRoutes";
