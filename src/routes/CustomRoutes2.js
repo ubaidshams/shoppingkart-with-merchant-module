@@ -19,15 +19,9 @@ import Order from "../pages/profile/Order";
 import Welcome from "../components/welcomepage/Welcome";
 
 // !--------------- MERCHANT MOUDULE IMPORTS------------ //
-<<<<<<<<< Temporary merge branch 1
 import MerchantSignup from "../MERCHANT_MODULE/pages/auth/MerchantSignup";
 import Home from '../MERCHANT_MODULE/home/Home';
-=========
-import MerchantSignup from "../MERCHANT_MODULE/pages/auth/Signup";
-import Home from "../MERCHANT_MODULE/home/Home";
->>>>>>>>> Temporary merge branch 2
 
-// !--------------- MERCHANT MOUDULE IMPORTS------------ //
 
 const CustomRoutes2 = () => {
   let myRoutes = useRoutes([
