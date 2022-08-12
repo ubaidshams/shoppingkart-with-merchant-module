@@ -27,8 +27,8 @@ export default function Reset() {
   let [searchParam, setSearchParam] = useSearchParams();
   const [token, setToken] = useState("");
   // console.log(useSearchParams())
-  let [newpass, setPass] = useState();
-  let [confirmpassword, setPassword] = useState();
+  let [newpass, setPass] = useState("");
+  let [confirmpassword, setPassword] = useState("");
 
   useEffect(() => {
     setToken(searchParam.get("token"));
@@ -97,7 +97,7 @@ export default function Reset() {
               fullWidth
               name="confirmpassword"
               label="confirm password"
-              type="confirmpassword"
+              type="password"
               id="confirmpassword"
               autoComplete="current-password"
               value={confirmpassword}
