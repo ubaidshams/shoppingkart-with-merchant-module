@@ -28,7 +28,6 @@ import ProtectedRoute from "../helper/ProtectedRoutes";
 import MerchantRoutes from "./MerchantRoutes";
 
 // !--------------- MERCHANT MOUDULE IMPORTS------------ //
-
 const CustomRoutes2 = () => {
   let myRoutes = useRoutes([
     {
@@ -69,6 +68,7 @@ const CustomRoutes2 = () => {
         </ProtectedRoute>
       ),
     }
+
 
   ]);
   return myRoutes;

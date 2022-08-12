@@ -18,29 +18,6 @@ import MerchantDashBoard from "./MERCHANT_MODULE/home/Home";
 import ProtectedRoute from "./helper/ProtectedRoutes";
 import MerchantRoutes from "./routes/MerchantRoutes";
 
-// const MerchantUserView =()=>{
-//   return (
-//     <>
-//     <MerchantDashBoard/>
-//     </>
-//   )
-// }
-
-// const CustomerUserView =()=>{
-//   return (<>
-//       <Navbar/>
-//         <CustomRoutes/>
-//       <Footer/>
-//   </>)
-// }
-
-// const AnonymousUserView =()=>{
-//   return ( <>
-//     <Navbar/>
-//     <CustomRoutes2/>
-//     <Footer/>
-//   </>)
-// }
 
 const App = () => {
   AOS.init({ once: true });
