@@ -5,7 +5,7 @@ import Radio from "@material-ui/core/Radio";
 import RadioGroup from "@material-ui/core/RadioGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import FormLabel from "@material-ui/core/FormLabel";
-import style from "./signup.module.css";
+import style from "../signup.module.css";
 import { motion } from "framer-motion";
 import Axios from "../../../apis/Axios";
 import MenuItem from "@material-ui/core/MenuItem";

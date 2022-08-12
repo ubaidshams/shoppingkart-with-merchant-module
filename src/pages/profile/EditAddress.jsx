@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { Card, TextField, makeStyles } from "@material-ui/core";
-import style from "../auth/users/signup.module.css";
+import style from "../auth/signup.module.css";
 import { motion } from "framer-motion";
 import MenuItem from "@material-ui/core/MenuItem";
 import Select from "@material-ui/core/Select";
