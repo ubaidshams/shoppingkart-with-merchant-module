@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import {Link} from "react-router-dom"
 import { useSelector, useDispatch } from "react-redux";
 import { fetchMerchantProducts } from "../../../features/products/productSlice";
 import PropTypes from "prop-types";
@@ -134,10 +135,11 @@ let deleteProduct= async (productId)=>{
                             ) : (column.id === "actions")? (
                               //BEGIN :: actions button 
                               <>
-                              
-                              <IconButton onClick={()=> console.log("edit link should add her by productId"+ row.productId)}>
+                              <Link to={`/edit-product/${row.productId}`}>
+                              <IconButton>
                                 <EditIcon color="success" />
                               </IconButton>
+                              </Link>
                               <IconButton
                                 onClick={()=> deleteProduct(row.productId)}
                               >

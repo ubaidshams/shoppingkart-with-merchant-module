@@ -33,9 +33,7 @@ const AddProduct = () => {
   let classes = useStyles();
   let [name, setName] = useState("");
   let [brand, setBrand] = useState("");
-  // =======
   let [category, setCategory] = useState("");
-  // ==========
   let [description, setDescription] = useState("");
   let [offer, setOffer] = useState(0);
   let [price, setPrice] = useState(0);
@@ -44,11 +42,9 @@ const AddProduct = () => {
   let [quantity, setQuantity] = useState("");
   let [tags, setTags] = useState("");
   let [searchTags, setSearchTags] = useState([]);
-
   let [title, setTitle] = useState("");
   let [type, setType] = useState("");
   let [thumbnailURL, setThumbnailURL] = useState("");
-
   let [productList, setProductList] = useState([]);
 
   let currUser = useSelector((state) => state.user.currentUser);
@@ -159,7 +155,7 @@ const AddProduct = () => {
   return (
     <section className="productFromSection">
       <Typography variant="h4" align="center">
-        Add Products{" "}
+        Add Products
       </Typography>
 
       <article className={Styles.productMainBlock}>
