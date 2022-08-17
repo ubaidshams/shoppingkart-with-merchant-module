@@ -27,7 +27,9 @@ import AccordionDetails from "@mui/material/AccordionDetails";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import { makeStyles } from "@material-ui/core/styles";
 import { Link, Outlet } from "react-router-dom";
+
 import Auth from "../../components/navbar/Auth"
+
 const drawerWidth = 240;
 
 const Main = styled("main", { shouldForwardProp: prop => prop !== "open" })(
@@ -120,7 +122,7 @@ export default function PersistentDrawerLeft() {
             Merchant Home
           </Typography>
           <Menu />
-          <Button color="inherit">Login</Button>
+          <Button color="inherit">Login</Button>  
           <Auth />
         </Toolbar>
       </AppBar>
@@ -210,8 +212,7 @@ export default function PersistentDrawerLeft() {
                         paddingLeft: "18%",
                       }}
                     >
-                      
-                        <ListItemText primary={value.name} />
+                    <ListItemText primary={value.name} />
                       
                     </Link>
                   </ListItem>
@@ -223,6 +224,7 @@ export default function PersistentDrawerLeft() {
         {/* END :: SideBar Navigation links */}
 
       </Drawer>
+
       <Main open={open} style={{marginTop:"70px"}}>
         {/* <DrawerHeader /> */}
         <Outlet />
