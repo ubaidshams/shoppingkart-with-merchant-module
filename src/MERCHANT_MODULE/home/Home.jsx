@@ -17,7 +17,6 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import InboxIcon from "@mui/icons-material/MoveToInbox";
-import Menu from "./Menu";
 import { Button } from "@mui/material";
 import styles from "./home.module.css";
 import { PlusOne } from "@material-ui/icons";
@@ -119,9 +118,8 @@ export default function PersistentDrawerLeft() {
             >
               <MenuIcon />
             </IconButton>
-            Merchant Home
+            <Link to="/" >ShoppingKart</Link>
           </Typography>
-          <Menu />
           <Button color="inherit">Login</Button>  
           <Auth />
         </Toolbar>

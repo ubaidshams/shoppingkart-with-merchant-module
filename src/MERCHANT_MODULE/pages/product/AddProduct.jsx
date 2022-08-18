@@ -16,7 +16,7 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
-
+import BackdropSpinner from "../../../components/spinner/BackdropSpinner"
 import { HighlightOffOutlined, AddCircleOutline } from "@mui/icons-material";
 import Axios from "../../../apis/Axios";
 import {firstNameRegex, alphaNeumericSpaceRegex , alphaSpaceRegex , numberDecimalRegex} from "../../../validation/Regex"
@@ -31,6 +31,7 @@ const useStyles = makeStyles((theme) => ({
 
 const AddProduct = () => {
   let classes = useStyles();
+  let [showBackdrop, setShowBackdrop]=useState(false)
   let [name, setName] = useState("");
   let [brand, setBrand] = useState("");
   let [category, setCategory] = useState("");
@@ -103,11 +104,13 @@ const AddProduct = () => {
 
   // ! submit Product list
   let submitProducts = async () => {
-    let payload = productList;
     try {
+      setShowBackdrop(true)
+      let payload = productList;
       await Axios.post("/products", payload);
       setProductList([])
       toast.success(" Product List Added");
+      setShowBackdrop(false)
 
     } catch (err) {
       console.log(err);
@@ -497,6 +500,7 @@ const AddProduct = () => {
           {/* END :: submit product Lsit button */}
 
         </div>
+        <BackdropSpinner open={showBackdrop} />
       </article>
     </section>
   );

@@ -1,5 +1,5 @@
 import React, { useState, Fragment, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams , useNavigate } from "react-router-dom";
 import Styles from "./product.module.css";
 import Typography from "@mui/material/Typography";
 import { toast } from "react-toastify";
@@ -17,7 +17,7 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
-
+import BackdropSpinner from "../../../components/spinner/BackdropSpinner"
 import { HighlightOffOutlined, AddCircleOutline } from "@mui/icons-material";
 import Axios from "../../../apis/Axios";
 import {
@@ -36,6 +36,8 @@ const useStyles = makeStyles((theme) => ({
 
 const EditProduct = () => {
   let classes = useStyles();
+  let navigate = useNavigate();
+  let [showBackdrop, setShowBackdrop]=useState(false)
   let { id } = useParams();
   let [name, setName] = useState("");
   let [brand, setBrand] = useState("");
@@ -52,10 +54,8 @@ const EditProduct = () => {
   let [type, setType] = useState("");
   let [thumbnailURL, setThumbnailURL] = useState("");
 
-  let [productList, setProductList] = useState([]);
-
   let currUser = useSelector((state) => state.user.currentUser);
-  let {userId} =currUser
+  let { userId } = currUser;
   // edit working
   useEffect(() => {
     let getOneProduct = () => {
@@ -64,69 +64,70 @@ const EditProduct = () => {
       )
         .then((res) => res.json())
         .then((data) => {
-            let product = data.data;
-            console.log(product);
-            setName(product.name);
-            setBrand(product.brand);
-            setCategory(product.category)
-            setDescription(product.description);
-            setOffer(product.offer);
-            setPrice(product.price);
-            setProductImagesURls(product.productImageURLs);
-            setQuantity(product.quantity);
-            setSearchTags(product.searchTags);
-            setTitle(product.title);
-            setType(product.type);
-            setThumbnailURL(product.thumbnailURL);
+          let product = data.data;
+          console.log(product);
+          setName(product.name);
+          setBrand(product.brand);
+          setCategory(product.category);
+          setDescription(product.description);
+          setOffer(product.offer);
+          setPrice(product.price);
+          setProductImagesURls(product.productImageURLs);
+          setQuantity(product.quantity);
+          setSearchTags(product.searchTags);
+          setTitle(product.title);
+          setType(product.type);
+          setThumbnailURL(product.thumbnailURL);
         })
-            
+
         .catch((err) => console.log(err));
     };
     getOneProduct();
   }, [id]);
-  
 
+  //! adding single product in list
+  let handleSubmit = async () => {
+    try {
+        setShowBackdrop(true)
+      let product = {
+        brand,
+        category,
+        description,
+        merchantId: userId,
+        name,
+        offer,
+        price,
+        productImageURLs,
+        quantity,
+        searchTags,
+        thumbnailURL,
+        title,
+        type,
+      };
 
-  // adding single product in list
-  let handleSubmit = () => {
-    let product = {
-      brand,
-      category,
-      description,
-      merchantId: userId,
-      name,
-      offer,
-      price,
-      productImageURLs,
-      quantity,
-      searchTags,
-      thumbnailURL,
-      title,
-      type
-    };
-    console.log(product);
-    setProductList([...productList, product])
-   
-    console.log(productList)
-    setBrand("");
-    setCategory("");
-    setName("");
-    setDescription("");
-    setOffer("");
-    setPrice("");
-    setProductImagesURls([]);
-    setQuantity("");
-    setSearchTags([]);
-    setThumbnailURL("");
-    setTitle("");
-    setType("")
-
-    console.log(productList);
+      let payload = product;
+      let response = await Axios.put(`/products?id=${id}`, payload);
+      setShowBackdrop(false)
+      toast.success(response.data.message);
+      setBrand("");
+      setCategory("");
+      setName("");
+      setDescription("");
+      setOffer("");
+      setPrice("");
+      setProductImagesURls([]);
+      setQuantity("");
+      setSearchTags([]);
+      setThumbnailURL("");
+      setTitle("");
+      setType("");
+      navigate(-1)
+    } catch (err) {
+      console.log(err);
+      toast.error(err.message);
+    }
   };
 
-
-
- 
   //Product category List
   let categoryList = [
     "beauty",
@@ -196,6 +197,16 @@ const EditProduct = () => {
             onChange={(e) => {
               setName(e.target.value);
             }}
+            error={name != "" && firstNameRegex.test(name) === false}
+              helperText={
+                name != "" && /^[a-zA-Z_. 0-9]+$/g.test(name) === false
+                  ? "must be alphabets"
+                  : (name != "" && name.length < 3) || name.length > 20
+                  ? "char should be between 3-20"
+                  : name != "" && firstNameRegex.test(name) === false
+                  ? "invalid name"
+                  : ""
+              }
           />
           <TextField
             label="Brand"
@@ -208,6 +219,16 @@ const EditProduct = () => {
             onChange={(e) => {
               setBrand(e.target.value);
             }}
+            error={brand != "" && firstNameRegex.test(brand) === false}
+              helperText={
+                brand != "" && /^[a-zA-Z_.]+$/g.test(brand) === false
+                  ? "must be alphabets"
+                  : (brand != "" && brand.length < 3) || brand.length > 20
+                  ? "char should be between 3-20"
+                  : brand != "" && firstNameRegex.test(brand) === false
+                  ? "invalid name"
+                  : ""
+              }
           />
           <TextField
             label="Product Title"
@@ -221,6 +242,16 @@ const EditProduct = () => {
             onChange={(e) => {
               setTitle(e.target.value);
             }}
+            error={title != "" && alphaNeumericSpaceRegex.test(title) === false}
+              helperText={
+                title != "" && alphaNeumericSpaceRegex.test(title) === false
+                  ? "must be alphabets"
+                  : (title != "" && title.length < 3) || title.length > 40
+                  ? "char should be between 3-40"
+                  : title != "" && alphaNeumericSpaceRegex.test(title) === false
+                  ? "invalid title"
+                  : ""
+              }
           />
 
           <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
@@ -256,6 +287,16 @@ const EditProduct = () => {
             onChange={(e) => {
               setType(e.target.value);
             }}
+            error={type != "" && alphaSpaceRegex.test(type) === false}
+              helperText={
+                type != "" && /^[a-zA-Z ]*$/g.test(type) === false
+                  ? "must be alphabets"
+                  : (type != "" && type.length < 3) || type.length > 20
+                  ? "maximum length 3-20"
+                  : type != "" && alphaSpaceRegex.test(type) === false
+                  ? "invalid type"
+                  : ""
+              }
           />
 
           <TextField
@@ -422,9 +463,8 @@ const EditProduct = () => {
             {/*END ::  SEARCH TAGS */}
           </div>
 
-
-         {/* BEGIN :: save product  button */}
-         {productImageURLs.length >= 1 &&
+          {/* BEGIN :: save product  button */}
+          {productImageURLs.length >= 1 &&
           searchTags.length >= 1 &&
           brand &&
           category &&
@@ -440,15 +480,16 @@ const EditProduct = () => {
             </button>
           ) : (
             <button
-              className={Styles.bn5} style={{backgroundColor:"#ccc"}}
+              className={Styles.bn5}
+              style={{ backgroundColor: "#ccc" }}
               onClick={() => toast.info("please fill all field")}
             >
               Update Product Details
             </button>
           )}
           {/* END :: save product  button */}
-
         </div>
+        <BackdropSpinner open={showBackdrop} />
       </article>
     </section>
   );

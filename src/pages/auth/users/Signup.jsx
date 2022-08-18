@@ -104,24 +104,7 @@ const Signup = () => {
     else setError(true);
   }, [email, phone, fname, lname]);
 
-  // const emailValidation = () => {
-  //   const regEx = /[a-zA-Z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,8}(.[a-z{2,8}])?/g;
-  //   console.log(regEx.test(email));
-  //   if (regEx.test(email)) {
-  //     setMessage("Valid Email");
-  //   } else {
-  //     setMessage("invalid email");
-  //   }
-  // };
 
-  // const phoneValidation = () => {
-  //   const regEx = /^([+]?[\s0-9]+)?(\d{3}|[(]?[0-9]+[)])?([-]?[\s]?[0-9])+$/i;
-  //   if (regEx.test(phone)) {
-  //     setMessage("Valid phone");
-  //   } else {
-  //     setMessage("invalid phone");
-  //   }
-  // };
 
   const onAgreeTC = tcAccepted => {
     setBtnCondition(tcAccepted);

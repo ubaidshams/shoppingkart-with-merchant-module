@@ -25,6 +25,7 @@ import {
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from '@mui/icons-material/Edit';
+import MoreIcon from '@material-ui/icons/More';
 import FilterListIcon from "@mui/icons-material/FilterList";
 import { visuallyHidden } from "@mui/utils";
 import Axios from "../../../apis/Axios";
@@ -135,6 +136,11 @@ let deleteProduct= async (productId)=>{
                             ) : (column.id === "actions")? (
                               //BEGIN :: actions button 
                               <>
+                              <Link to={`/product-info/${row.productId}`}>
+                              <IconButton >
+                                <MoreIcon color="primary" />
+                              </IconButton>
+                              </Link>
                               <Link to={`/edit-product/${row.productId}`}>
                               <IconButton>
                                 <EditIcon color="success" />
