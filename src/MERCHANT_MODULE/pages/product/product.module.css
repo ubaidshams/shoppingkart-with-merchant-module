@@ -16,13 +16,11 @@
   }
   .leftBlock {
     flex-basis: 75%;
-    background-color: aqua;
     padding: 7px;
   }
   .rightBlock{
     flex-basis: 25%;
     padding: 7px;
-    background-color: wheat;
   }
 
 
@@ -30,24 +28,25 @@
     display: flex;
     flex-direction: row;
     justify-content: center;
+    flex-wrap: wrap;
   }
   .block3Child1{
-    flex-basis: 35%;
+    flex-basis: 40%;
     padding: 10px 20px;
-    background-color:  pink;
+    flex-wrap: wrap;
   }
-  .block3Child1 > button{
-    margin-top: 15px;
-
+  .block3Child1 >div{
+    display: flex;
+    /* flex-wrap: wrap; */
   }
+  
   .block3Child2{
     padding: 10px 20px;
-    flex-basis: 65%;
-    background-color: yellow;
+    flex-basis: 60%;
   }
 
   .listCardBlock{
-    background-color: #ccc;
+    background-color: rgba(204, 204, 204, 0.441);
     height: 20vh;
     max-width: 680px;
     max-height: 300px;
@@ -58,65 +57,48 @@
     border-radius: 5px;
   }
   .cardBadge{
-    background-color: red;
-    display: flex;
+    /* background-color: rgb(172, 226, 220); */
+    border-radius: 4px;
+    /* display: inline-block; */
+  }
+
+
+
+  
+  
  
-  }
+  
+ .bn6 {
+  color: rgb(255, 255, 255);
+  background: #ec8a2f;
+  cursor: pointer;
+  border-radius: 10px;
+    font-weight: bold;
+    font-size: larger;
+    padding: 20px 50px;
+    border: none;
+    outline: none;
+    width: 100%;
+ }
 
-
-
+ .bn6:hover {
+  background-color: #ed7501; 
+  cursor: pointer;
+  border-radius: 10px;
+  font-weight: bold;
+  font-size: larger;
+  padding: 20px 50px;
+    border: none;
+    outline: none;
+    animation: glowingbn5 20s linear infinite;
+    transition: opacity 0.3s ease-in-out;
+ }
+ 
   
-  .formContainer{
-    width: 75%;
-    margin: 10px auto;
-  }
-  
-  .formCard section a {
-    color: #0070c9;
-    text-decoration: none;
-    cursor: pointer;
-  }
-  .formCard section a::after {
-    content: ">>";
-  }
-  
-  .formCard section a:hover {
-    text-decoration: underline;
-  }
-  hr {
-    width: 70%;
-    margin: 15px auto;
-    height: 0.01rem;
-    background-color: #999;
-  }
-  
-  .formCardContainer {
-    width: 800px;
-    /* height:50vh; */
-    margin: 10px auto;
-    padding: 15px;
-    display: flex;
-    justify-content: space-evenly;
-    margin-bottom: -10px;
-    background: transparent;
-  }
-  
-  .formCardContainer #email,
-  .formCardContainer2 #password {
-    display: inline-block;
-  }
-  
-  .formTextBox {
-    height: 40px;
-  }
-  
-  .radioGroup {
-    display: flex;
-  }
-  
+ 
   /* btn */
   .bn5 {
-    /* width: 100%; */
+    width: 100%;
     padding: 20px 50px;
     border: none;
     outline: none;
