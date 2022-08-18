@@ -12,7 +12,7 @@ import PersistentLogin from "./components/PersistentLogin/PersistentLogin";
 import { useSelector, useDispatch } from "react-redux";
 
 import CustomRoutes2 from "./routes/CustomRoutes2";
-import { fetchProducts } from "./features/products/productSlice";
+import { fetchProducts , fetchMerchantProducts} from "./features/products/productSlice";
 import Home from "./pages/home/Home";
 import MerchantDashBoard from "./MERCHANT_MODULE/home/Home";
 import ProtectedRoute from "./helper/ProtectedRoutes";
@@ -28,6 +28,8 @@ const App = () => {
       dispatch(fetchProducts());
     }
   }, []);
+
+  
 
   return (
     <div>

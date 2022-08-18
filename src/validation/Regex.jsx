@@ -5,3 +5,7 @@ export const phoneRegex =
 export const firstNameRegex = /^(?=.{3,20}$)[a-z]+(?:['_.\s][a-z]+)*$/i;
 export const lastNameRegex = /^(?=.{3,20}$)[a-z]+(?:['_.\s][a-z]+)*$/i;
 
+export const alphaNeumericSpaceRegex =/^[A-Za-z0-9 _]*[A-Za-z0-9][A-Za-z0-9 _]*$/i;
+export const alphaSpaceRegex =/^[a-zA-Z ]*$/;
+
+export const numberDecimalRegex = /^(?=.+)(?:[1-9]\d*|0)?(?:\.\d+)?$/;
