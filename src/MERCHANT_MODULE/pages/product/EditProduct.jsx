@@ -240,7 +240,7 @@ const EditProduct = () => {
             required
             value={title}
             onChange={(e) => {
-              setTitle(e.target.value);
+              setTitle(e.target.value.toLowerCase());
             }}
             error={title != "" && alphaNeumericSpaceRegex.test(title) === false}
               helperText={

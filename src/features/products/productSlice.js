@@ -8,7 +8,7 @@ const initialState = {
   error: "",
 };
 
-//BEGIN :: USER MODULE FUNCTIONS
+//TODO BEGIN :: MERCHANT MODULE FUNCTIONS
 
 export const fetchMerchantProducts = createAsyncThunk("products/fetchMerchantProducts", (merchId)=>{
   return fetch(
@@ -17,8 +17,8 @@ export const fetchMerchantProducts = createAsyncThunk("products/fetchMerchantPro
 
 })
 
+//TODO END :: MERCHANT MODULE FUNCTIONS
 
-//END :: USER MODULE FUNCTIONS
 
 
 
